@@ -1,4 +1,4 @@
-import { exec } from "child_process";
+import {exec} from "child_process";
 import puppeteer from 'puppeteer';
 import * as readline from "node:readline";
 import * as fs from "node:fs";
@@ -25,23 +25,28 @@ rl.question(`Website URL `, url => {
 
 function checkForLock(input_url, actual_file_name) {
     if (Lock.status()) {
-        console.log("Lock is active...")
+        console.log("Lock is active...");
         setTimeout(() => checkForLock(), 3000);
     } else {
         Lock.lock();
+        console.log("No lock!");
         main(input_url, actual_file_name).then(() => {});
     }
 }
 
 class Lock {
     static status() {
-        return fs.existsSync("node.lock")
+        return fs.existsSync("node.lock");
     }
     static lock() {
-        fs.writeFileSync("node.lock", "")
+        fs.writeFileSync("node.lock", "");
     }
     static unlock() {
-        fs.unlinkSync("node.lock")
+        try {
+            fs.unlinkSync("node.lock");
+        } catch (e) {
+            console.warn(e);
+        }
     }
 }
 
@@ -99,7 +104,7 @@ export async function main(website_url, file_name) {
             tripped = true;
             browser.close();
             const command = `python311 main.py --video_url="${video_link}" --license_url="${license_url}" --file_name="${file_name}"`;
-
+            Lock.unlock();
             console.log("Starting python script")
             exec(command, (error, stdout, stderr) => {
                 if (error) {
