@@ -1,6 +1,7 @@
 import { exec } from "child_process";
 import puppeteer from 'puppeteer';
 import * as readline from "node:readline";
+import * as fs from "node:fs";
 
 let input_url = ''
 let actual_file_name = ''
@@ -18,9 +19,31 @@ rl.question(`Website URL `, url => {
     rl.question('File name ', file => {
         actual_file_name = file;
         rl.close();
-        main(input_url, actual_file_name).then(() => {});
+        checkForLock(input_url, actual_file_name);
     });
 });
+
+function checkForLock(input_url, actual_file_name) {
+    if (Lock.status()) {
+        console.log("Lock is active...")
+        setTimeout(() => checkForLock(), 3000);
+    } else {
+        Lock.lock();
+        main(input_url, actual_file_name).then(() => {});
+    }
+}
+
+class Lock {
+    static status() {
+        return fs.existsSync("node.lock")
+    }
+    static lock() {
+        fs.writeFileSync("node.lock", "")
+    }
+    static unlock() {
+        fs.unlinkSync("node.lock")
+    }
+}
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
