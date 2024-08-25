@@ -1,0 +1,15 @@
+{
+  "name": "autodownloader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "fs-ext": "^2.0.0",
+    "puppeteer": "^23.1.0"
+  }
+}
