@@ -19,28 +19,34 @@ rl.question(`Website URL `, url => {
     rl.question('File name ', file => {
         actual_file_name = file;
         rl.close();
-        checkForLock(input_url, actual_file_name);
+        waitForLock().then(() => {
+            console.log("Execution started");
+            main(input_url, actual_file_name).then(() => {
+            });
+        });
     });
 });
 
-function checkForLock(input_url, actual_file_name) {
-    if (Lock.status()) {
-        console.log("Lock is active...");
-        setTimeout(() => checkForLock(), 3000);
-    } else {
+function waitForLock() {
+    return new Promise(async resolve => {
+        while (Lock.status()) {
+            console.log("Lock is active...")
+            await sleep(3000);
+        }
         Lock.lock();
-        console.log("No lock!");
-        main(input_url, actual_file_name).then(() => {});
-    }
+        resolve();
+    });
 }
 
 class Lock {
     static status() {
         return fs.existsSync("node.lock");
     }
+
     static lock() {
         fs.writeFileSync("node.lock", "");
     }
+
     static unlock() {
         try {
             fs.unlinkSync("node.lock");
@@ -104,7 +110,6 @@ export async function main(website_url, file_name) {
             tripped = true;
             browser.close();
             const command = `python311 main.py --video_url="${video_link}" --license_url="${license_url}" --file_name="${file_name}"`;
-            Lock.unlock();
             console.log("Starting python script")
             exec(command, (error, stdout, stderr) => {
                 if (error) {
@@ -115,6 +120,7 @@ export async function main(website_url, file_name) {
                     console.log(stderr);
                 }
                 console.log(stdout);
+                Lock.unlock();
             });
         }
     }
