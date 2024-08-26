@@ -6,6 +6,7 @@ import subprocess
 from pathlib import Path
 
 import requests
+from filelock import FileLock
 
 
 def download_video_and_pssh(url: str, temp_name: str) -> str:
@@ -97,4 +98,9 @@ if __name__ == "__main__":
         license_url = input("Enter license URL: ")
         file_name = input("Enter file name: ")
 
-    main(video_url, license_url, file_name, str(rng_temp_name))
+    # Create a lock file in the same directory as the script
+    lock_path = Path(__file__).with_suffix('.lock')
+    lock = FileLock(lock_path)
+
+    with lock:
+        main(video_url, license_url, file_name, str(rng_temp_name))
