@@ -110,6 +110,7 @@ export async function main(website_url, file_name) {
             tripped = true;
             browser.close();
             const command = `python311 main.py --video_url="${video_link}" --license_url="${license_url}" --file_name="${file_name}"`;
+            Lock.unlock();
             console.log("Starting python script")
             exec(command, (error, stdout, stderr) => {
                 if (error) {
@@ -120,7 +121,6 @@ export async function main(website_url, file_name) {
                     console.log(stderr);
                 }
                 console.log(stdout);
-                Lock.unlock();
             });
         }
     }
