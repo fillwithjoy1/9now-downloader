@@ -109,7 +109,7 @@ export async function main(website_url, file_name) {
         if (!tripped) {
             tripped = true;
             browser.close();
-            const command = `python311 main.py --video_url="${video_link}" --license_url="${license_url}" --file_name="${file_name}"`;
+            const command = `python main.py --video_url="${video_link}" --license_url="${license_url}" --file_name="${file_name}"`;
             console.log("Starting python script")
             exec(command, (error, stdout, stderr) => {
                 if (error) {
