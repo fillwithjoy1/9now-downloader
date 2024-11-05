@@ -79,12 +79,14 @@ export async function main(website_url, file_name) {
 // Navigate the page to a URL.
     await page.goto('https://login.nine.com.au/login?client_id=9now-web');
 
+    // FIXME: CENSOR EMAIL
     await page.type('#input_email', 'REDACTED');
 
     await page.click('button[type="submit"]');
 
     await page.waitForNavigation();
 
+    // FIXME: WILL NEED TO CENSOR. AHEM AHEM
     await page.type('#input_password', 'REDACTED');
 
     await page.click('button[type="submit"]');
