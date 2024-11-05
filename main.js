@@ -1,3 +1,7 @@
+// This file powers the magic. It's currently based on rl.question,
+// mainly because I can't make node work easily :(
+// Reliability is not there for this file
+
 import {exec} from "child_process";
 import puppeteer from 'puppeteer';
 import * as readline from "node:readline";

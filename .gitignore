@@ -1,1 +1,4 @@
 /output/
+/Logs/
+/.venv/
+/node_modules/
