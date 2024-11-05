@@ -18,6 +18,12 @@ const rl = readline.createInterface({
     output: process.stdout,
 });
 
+// TODO: Import rl.question to parse arguments
+// TODO: For downloading entire sports, we can do a link scan between 1 - infinite (where it stops once it encounters a 404)
+// TODO: Fix download issues, or add auto-restarts to shaft this problem completely
+//  It's occurring due to random ad breaks occurring
+// TODO: Get it working in headless mode. So far, we are relying heavily on auto-play to do the work
+//  That will have to be changed
 rl.question(`Website URL `, url => {
     input_url = url;
     rl.question('File name ', file => {
