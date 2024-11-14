@@ -45,7 +45,7 @@ rl.question(`Website URL `, url => {
         rl.close();
         waitForLock().then(() => {
             console.log("Execution started");
-            main(input_url, actual_file_name).then(() => {
+            navigateToVideo(input_url, actual_file_name).then(() => {
             });
         });
     });
@@ -84,7 +84,7 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function main(website_url, file_name) {
+export async function navigateToVideo(website_url, file_name) {
 // Launch the browser and open a new blank page
     const browser = await puppeteer.launch({
         browser: 'firefox',
@@ -128,6 +128,12 @@ export async function main(website_url, file_name) {
     });
 
     await page.goto(website_url);
+
+    // This is dangerous due to race conditions... (might need to revisit later)
+    if (file_name === null) {
+        const title = await page.waitForSelector('#_3JyyHX');
+        file_name = await title.evaluate(t => t.textContent);
+    }
 
     function start_downloads(video_link, license_url, file_name) {
         if (!tripped) {
