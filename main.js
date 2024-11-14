@@ -129,10 +129,13 @@ export async function navigateToVideo(website_url, file_name) {
 
     await page.goto(website_url);
 
-    // This is dangerous due to race conditions... (might need to revisit later)
-    if (file_name === null) {
-        const title = await page.waitForSelector('#_3JyyHX');
-        file_name = await title.evaluate(t => t.textContent);
+    // FIXME: Not working as of right now
+    if (file_name === undefined) {
+        console.log("oh I work!")
+        const title = await page.$eval('#_3JyyHX', t => t.innerHTML);
+        console.log(title);
+        console.log("Hello!")
+        console.log(file_name);
     }
 
     function start_downloads(video_link, license_url, file_name) {
