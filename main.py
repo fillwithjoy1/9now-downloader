@@ -105,5 +105,6 @@ if __name__ == "__main__":
     lock_path = Path(__file__).with_suffix('.lock')
     lock = FileLock(lock_path)
 
+    # This ensures that only one download goes at a time
     with lock:
         main(video_url, license_url, file_name, str(rng_temp_name))
