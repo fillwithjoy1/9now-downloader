@@ -7,6 +7,20 @@ import puppeteer from 'puppeteer';
 import * as readline from "node:readline";
 import * as fs from "node:fs";
 
+// Credentials Manager
+// Probably shouldn't put these as null for the time being
+let email = null;
+let password = null;
+if (fs.existsSync("password")) {
+    fs.readFile("password", "utf8", (err, data) => {
+        if (err) {
+            console.error(err);
+        }
+        email = data.split("\r\n")[0];
+        password = data.split("\r\n")[1];
+    });
+}
+
 let input_url = ''
 let actual_file_name = ''
 let video_link = ''
@@ -85,15 +99,13 @@ export async function main(website_url, file_name) {
 // Navigate the page to a URL.
     await page.goto('https://login.nine.com.au/login?client_id=9now-web');
 
-    // FIXME: CENSOR EMAIL
-    await page.type('#input_email', 'REDACTED');
+    await page.type('#input_email', email);
 
     await page.click('button[type="submit"]');
 
     await page.waitForNavigation();
 
-    // FIXME: WILL NEED TO CENSOR. AHEM AHEM
-    await page.type('#input_password', 'REDACTED');
+    await page.type('#input_password', password);
 
     await page.click('button[type="submit"]');
 
