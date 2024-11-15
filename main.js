@@ -8,9 +8,8 @@ import * as readline from "node:readline";
 import * as fs from "node:fs";
 
 // Credentials Manager
-// Probably shouldn't put these as null for the time being
-let email = null;
-let password = null;
+let email = "";
+let password = "";
 if (fs.existsSync("password")) {
     fs.readFile("password", "utf8", (err, data) => {
         if (err) {
@@ -45,7 +44,7 @@ rl.question(`Website URL `, url => {
         rl.close();
         waitForLock().then(() => {
             console.log("Execution started");
-            navigateToVideo(input_url, actual_file_name).then(() => {
+            navigateToVideo(input_url).then(() => {
             });
         });
     });
@@ -127,12 +126,17 @@ export async function navigateToVideo(website_url, file_name) {
         }
     });
 
-    await page.goto(website_url);
+    if (file_name === undefined) {
+        await page.goto(website_url, {
+            waitUntil: "domcontentloaded",
+        });
+    } else {
+        await page.goto(website_url);
+    }
 
-    // FIXME: Not working as of right now
     if (file_name === undefined) {
         console.log("oh I work!")
-        const title = await page.$eval('#_3JyyHX', t => t.innerHTML);
+        const title = await page.$eval('._3JyyHX', t => t.innerHTML);
         console.log(title);
         console.log("Hello!")
         console.log(file_name);
