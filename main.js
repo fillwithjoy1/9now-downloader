@@ -3,7 +3,7 @@
 // Reliability is not there for this file
 
 import {exec} from "child_process";
-import puppeteer, {Page} from 'puppeteer';
+import puppeteer from 'puppeteer';
 import * as readline from "node:readline";
 import * as fs from "node:fs";
 
@@ -145,24 +145,29 @@ export async function download_playlist(playlist_url, folder_output) {
 
     await sleep(5000);
 
-    console.log('hi guys!');
-
-    await page.goto(playlist_url, {
-        waitUntil: "domcontentloaded",
-    });
-
-    page.title().then(title => console.log(title));
+    console.log(validate_playlist_length(page, playlist_url));
 
 
     // FIXME: Unlock the Lock, if needed
 }
 
-export async function validate_playlist_length(browser: Page, playlist_url: string): number {
+export async function validate_playlist_length(browser, playlist_url) {
+    for (let i = 0; i > 0; i++) {
+        await browser.goto(`${playlist_url}/episode-${i}`, {
+            waitUntil: "domcontentloaded"
+        });
 
+        const title = await browser.title();
+
+        if (title === "Page not found") {
+            return i - 1;
+        }
+    }
 }
 
 export async function download_single_video(website_url, file_name) {
 // Launch the browser and open a new blank page
+// TODO: Fix the duplicate code fragments
     const browser = await puppeteer.launch({
         browser: 'firefox',
         headless: false,
