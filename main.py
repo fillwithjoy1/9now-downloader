@@ -11,6 +11,8 @@ from pathlib import Path
 import requests
 from filelock import FileLock
 
+output: str = "output"
+
 
 def download_video_and_pssh(url: str, temp_name: str) -> str:
     process = subprocess.run(f"./N_m3u8DL-RE.exe --auto-select --save-name {temp_name} {url}", capture_output=True)
@@ -58,7 +60,7 @@ def decrypt_files(keys: str, temp_name: str):
 def merge_files(file_name: str, temp_name: str):
     subprocess.run(
         f"ffmpeg -i {temp_name}_merge.mp4 -i {temp_name}_merge.m4a -acodec copy -vcodec copy {temp_name}_final.mp4")
-    os.rename(f"{temp_name}_final.mp4", f"output/{file_name}.mp4")
+    os.rename(f"{temp_name}_final.mp4", f"{output}/{file_name}.mp4")
 
 
 def cleanup(temp_name: str):
@@ -91,11 +93,13 @@ if __name__ == "__main__":
     parser.add_argument("--video_url", type=str, help="Video URL")
     parser.add_argument("--license_url", type=str, help="License URL")
     parser.add_argument("--file_name", type=str, help="File name")
+    parser.add_argument("--output", type=str, help="Output folder")
     args = parser.parse_args()
     if args.video_url:
         video_url = args.video_url
         license_url = args.license_url
         file_name = args.file_name
+        output = args.output
     else:
         video_url = input("Enter video URL: ")
         license_url = input("Enter license URL: ")
