@@ -20,6 +20,13 @@ if (fs.existsSync("password")) {
     });
 }
 
+// Helper timeout function
+async function timeout(delay) {
+    return new Promise(resolve => {
+        setTimeout(resolve, delay);
+    })
+}
+
 let input_url = ''
 let actual_file_name = ''
 let video_link = ''
@@ -145,17 +152,17 @@ export async function download_playlist(playlist_url, folder_output) {
 
     await sleep(5000);
 
-    console.log(validate_playlist_length(page, playlist_url));
+    console.log(await validate_playlist_length(page, playlist_url));
 
 
     // FIXME: Unlock the Lock, if needed
 }
 
 export async function validate_playlist_length(browser, playlist_url) {
-    for (let i = 0; i > 0; i++) {
-        await browser.goto(`${playlist_url}/episode-${i}`, {
-            waitUntil: "domcontentloaded"
-        });
+    for (let i = 1; i > 0; i++) {
+        browser.goto(`${playlist_url}/episode-${i}`);
+
+        await timeout(3000);
 
         const title = await browser.title();
 
