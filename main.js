@@ -3,7 +3,7 @@
 // Reliability is not there for this file
 
 import {exec} from "child_process";
-import puppeteer from 'puppeteer';
+import puppeteer, {Page} from 'puppeteer';
 import * as readline from "node:readline";
 import * as fs from "node:fs";
 
@@ -145,12 +145,20 @@ export async function download_playlist(playlist_url, folder_output) {
 
     await sleep(5000);
 
-    await page.goto(playlist_url);
+    console.log('hi guys!');
 
-    // FIXME: Find a way to see HTTP Codes for the URL Scanning Method
-    page.on("request", async request => {
-        console.log(request.response().status());
+    await page.goto(playlist_url, {
+        waitUntil: "domcontentloaded",
     });
+
+    page.title().then(title => console.log(title));
+
+
+    // FIXME: Unlock the Lock, if needed
+}
+
+export async function validate_playlist_length(browser: Page, playlist_url: string): number {
+
 }
 
 export async function download_single_video(website_url, file_name) {
