@@ -154,11 +154,13 @@ export async function download_playlist(playlist_url, folder_output) {
 
     console.log(await validate_playlist_length(page, playlist_url));
 
-
+    // TODO: Download the videos after retrieving the playlist length
     // FIXME: Unlock the Lock, if needed
 }
 
 export async function validate_playlist_length(browser, playlist_url) {
+    // NOTE: This method is so bad, it could be improved massively
+    //  Especially with how we are receiving constant timeout errors
     for (let i = 1; i > 0; i++) {
         browser.goto(`${playlist_url}/episode-${i}`);
 
