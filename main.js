@@ -26,6 +26,11 @@ let video_link = ''
 let license_url = ''
 let tripped = false
 
+// This special variable is a flag to change how the JS code runs
+// When set to 0, it can download stuff individually
+// When set to 1, it can mass-download multiple videos
+let path = 0;
+
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -37,18 +42,47 @@ const rl = readline.createInterface({
 //  It's occurring due to random ad breaks occurring
 // TODO: Get it working in headless mode. So far, we are relying heavily on auto-play to do the work
 //  That will have to be changed
-rl.question(`Website URL `, url => {
-    input_url = url;
-    rl.question('File name ', file => {
-        actual_file_name = file;
-        rl.close();
-        waitForLock().then(() => {
-            console.log("Execution started");
-            navigateToVideo(input_url).then(() => {
-            });
-        });
-    });
+rl.question(`Download one video, or an entire playlist? (1, 2)`, option => {
+    if (option === "1" || option === "2") {
+        path = Number(option);
+        download_video();
+    } else {
+        console.log('Invalid choice. Exiting');
+        process.exit(2);
+    }
 });
+
+function download_video() {
+    switch (path) {
+        case 0:
+            process.exit(3);
+            break
+        case 1:
+            rl.question(`Website URL `, url => {
+                input_url = url;
+                rl.question('File name ', file => {
+                    actual_file_name = file;
+                    rl.close();
+                    waitForLock().then(() => {
+                        console.log("Execution started");
+                        navigateToVideo(input_url).then(() => {
+                        });
+                    });
+                });
+            });
+            break;
+        case 2:
+            rl.question(`Playlist URL`, url => {
+                input_url = url;
+                rl.question(`Output folder name`, folder => {
+                    rl.close();
+                    waitForLock().then(() => {
+                        // FIXME: MASS DOWNLOAD
+                    });
+                })
+            })
+    }
+}
 
 function waitForLock() {
     return new Promise(async resolve => {
