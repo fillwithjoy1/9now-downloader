@@ -65,7 +65,7 @@ function download_video() {
                     rl.close();
                     waitForLock().then(() => {
                         console.log("Execution started");
-                        navigateToVideo(input_url).then(() => {
+                        download_single_video(input_url).then(() => {
                         });
                     });
                 });
@@ -77,7 +77,8 @@ function download_video() {
                 rl.question(`Output folder name`, folder => {
                     rl.close();
                     waitForLock().then(() => {
-                        // FIXME: MASS DOWNLOAD
+                        download_playlist(input_url, folder).then(() => {
+                        });
                     });
                 })
             })
@@ -117,7 +118,42 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function navigateToVideo(website_url, file_name) {
+export async function download_playlist(playlist_url, folder_output) {
+    // Launch the browser and open a new blank page
+    const browser = await puppeteer.launch({
+        browser: 'firefox',
+        headless: false,
+        timeout: 0,
+        extraPrefsFirefox: {
+            'media.gmp-manager.updateEnabled': true,
+        },
+    });
+    const page = await browser.newPage();
+
+    // Login to 9 Now
+    await page.goto('https://login.nine.com.au/login?client_id=9now-web');
+
+    await page.type('#input_email', email);
+
+    await page.click('button[type="submit"]');
+
+    await page.waitForNavigation();
+
+    await page.type('#input_password', password);
+
+    await page.click('button[type="submit"]');
+
+    await sleep(5000);
+
+    await page.goto(playlist_url);
+
+    // FIXME: Find a way to see HTTP Codes for the URL Scanning Method
+    page.on("request", async request => {
+        console.log(request.response().status());
+    });
+}
+
+export async function download_single_video(website_url, file_name) {
 // Launch the browser and open a new blank page
     const browser = await puppeteer.launch({
         browser: 'firefox',
@@ -129,7 +165,7 @@ export async function navigateToVideo(website_url, file_name) {
     });
     const page = await browser.newPage();
 
-// Navigate the page to a URL.
+// Login to 9 Now
     await page.goto('https://login.nine.com.au/login?client_id=9now-web');
 
     await page.type('#input_email', email);
