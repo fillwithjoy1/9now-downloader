@@ -162,9 +162,7 @@ export async function validate_playlist_length(browser, playlist_url) {
     // NOTE: This method is so bad, it could be improved massively
     //  Especially with how we are receiving constant timeout errors
     for (let i = 1; i > 0; i++) {
-        browser.goto(`${playlist_url}/episode-${i}`);
-
-        await timeout(3000);
+        await browser.goto(`${playlist_url}/episode-${i}`);
 
         const title = await browser.title();
 
