@@ -80,7 +80,6 @@ function download_video() {
             break;
         case 2:
             rl.question(`Playlist URL`, url => {
-                input_url = url;
                 rl.question(`Output folder name`, folder => {
                     rl.close();
                     waitForLock().then(() => {
