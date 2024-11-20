@@ -68,7 +68,7 @@ function download_video() {
                 rl.question('File name ', file => {
                     actual_file_name = file;
                     rl.close();
-                    waitForLock().then(() => {
+                    waitForLock().then(async () => {
                         console.log("Execution started");
                         download_single_video(input_url).then(() => {
                         });
