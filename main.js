@@ -50,7 +50,7 @@ const rl = readline.createInterface({
 // TODO: Get it working in headless mode. So far, we are relying heavily on auto-play to do the work
 //  That will have to be changed
 rl.question(`Download one video, or an entire playlist? (1, 2)`, option => {
-    if (option === "1" || option === "2") {
+    if (["1", "2", "3"].includes(option)) {
         path = Number(option);
         download_video();
     } else {
@@ -87,8 +87,9 @@ function download_video() {
                         download_playlist(input_url, folder).then(() => {
                         });
                     });
-                })
-            })
+                });
+            });
+            break;
     }
 }
 
