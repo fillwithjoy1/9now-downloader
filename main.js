@@ -66,7 +66,6 @@ function download_video() {
             break
         case 1:
             rl.question(`Website URL `, url => {
-                input_url = url;
                 rl.question('File name ', file => {
                     actual_file_name = file;
                     rl.close();
