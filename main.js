@@ -84,7 +84,7 @@ function download_video() {
                 rl.question(`Output folder name`, folder => {
                     rl.close();
                     waitForLock().then(() => {
-                        download_playlist(input_url, folder).then(() => {
+                        download_playlist(url, folder).then(() => {
                         });
                     });
                 });
