@@ -153,6 +153,7 @@ export async function download_playlist(playlist_url, folder_output) {
     await sleep(5000);
 
     console.log(await validate_playlist_length(page, playlist_url));
+    console.warn("DONE");
 
     // TODO: Download the videos after retrieving the playlist length
     // FIXME: Unlock the Lock, if needed
@@ -162,7 +163,7 @@ export async function validate_playlist_length(browser, playlist_url) {
     // NOTE: This method is so bad, it could be improved massively
     //  Especially with how we are receiving constant timeout errors
     for (let i = 1; i > 0; i++) {
-        await browser.goto(`${playlist_url}/episode-${i}`);
+        await go_to_page(browser, `${playlist_url}/episode-${i}`);
 
         const title = await browser.title();
 
@@ -170,6 +171,26 @@ export async function validate_playlist_length(browser, playlist_url) {
             return i - 1;
         }
     }
+}
+
+async function go_to_page(browser, url) {
+    const title = await browser.title();
+    console.log(title);
+    await browser.goto(url, {
+        waitUntil: 'load'
+    });
+
+    while (await browser.title() === title) {
+        await timeout(1000);
+        console.log(title);
+    }
+}
+
+// NOTE: This is a helper function that supposed to fix a timeout issue
+async function timeout_browse(browser, url, timeout) {
+    browser.goto(url).then(() => {
+        return 0
+    });
 }
 
 export async function download_single_video(website_url, file_name) {
