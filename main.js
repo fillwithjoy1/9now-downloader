@@ -27,11 +27,10 @@ async function timeout(delay) {
     })
 }
 
-let input_url = ''
-let actual_file_name = ''
-let video_link = ''
-let license_url = ''
-let tripped = false
+let actual_file_name = '';
+let video_link = '';
+let license_url = '';
+let tripped = false;
 
 // This special variable is a flag to change how the JS code runs
 // When set to 0, it can download stuff individually
