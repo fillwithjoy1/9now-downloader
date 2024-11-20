@@ -70,8 +70,7 @@ function download_video() {
                     rl.close();
                     waitForLock().then(async () => {
                         console.log("Execution started");
-                        download_single_video(input_url).then(() => {
-                        });
+                        await download_single_video(url);
                     });
                 });
             });
@@ -191,7 +190,7 @@ async function timeout_browse(browser, url, timeout) {
     });
 }
 
-export async function download_single_video(website_url, file_name) {
+export async function download_single_video(website_url, file_name, folder_output = "output") {
 // Launch the browser and open a new blank page
 // TODO: Fix the duplicate code fragments
     const browser = await puppeteer.launch({
