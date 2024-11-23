@@ -14,3 +14,11 @@ eb676abbcb345e96bbcf616630f1a3da:100b6c20940f779a4589152b57d2dacb
 0294b9599d755de2bbf0fdca3fa5eab7:3bda2f40344c7def614227b9c0f03e26
 639da80cf23b55f3b8cab3f64cfa5df6:229f5f29b643e203004b30c4eaf348f4
 """)
+
+
+class CheckIllegalCharacters(unittest.TestCase):
+    def test_one(self):
+        self.assertEqual(main.sanitize_file_string("Test | Vertical Bar"), "Test - Vertical Bar")
+
+    def test_two(self):
+        self.assertEqual(main.sanitize_file_string("Test -> Next"), "Test -- Next")
