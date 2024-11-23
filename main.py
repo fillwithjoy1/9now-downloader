@@ -60,7 +60,7 @@ def decrypt_files(keys: str, temp_name: str):
 def merge_files(file_name: str, temp_name: str):
     subprocess.run(
         f"ffmpeg -i {temp_name}_merge.mp4 -i {temp_name}_merge.m4a -acodec copy -vcodec copy {temp_name}_final.mp4")
-    os.rename(f"{temp_name}_final.mp4", f"{output}/{file_name}.mp4")
+    os.rename(f"{temp_name}_final.mp4", f"{output}/{sanitize_file_string(file_name)}.mp4")
 
 
 def cleanup(temp_name: str):
