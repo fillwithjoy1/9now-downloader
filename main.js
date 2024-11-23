@@ -49,7 +49,7 @@ const rl = readline.createInterface({
 //  It's occurring due to random ad breaks occurring
 // TODO: Get it working in headless mode. So far, we are relying heavily on auto-play to do the work
 //  That will have to be changed
-rl.question(`Download one video, or an entire playlist? (1, 2)`, option => {
+rl.question(`Download one video, or an entire playlist? (1, 2)`).then(option => {
     if (["1", "2", "3"].includes(option)) {
         path = Number(option);
         download_video();
@@ -59,22 +59,17 @@ rl.question(`Download one video, or an entire playlist? (1, 2)`, option => {
     }
 });
 
-function download_video() {
+async function download_video() {
     switch (path) {
         case 0:
             process.exit(3);
             break
         case 1:
-            rl.question(`Website URL `, url => {
-                rl.question('File name ', async file => {
-                    actual_file_name = file;
-                    rl.close();
-                    // FIXME: Just use one-liners for this one. So much more elegant
-                    console.log("Execution started");
-                    // FIXME: Arguments not implemented properly
-                    await download_single_video(url, file);
-                });
-            });
+            const url = await rl.question(`Website URL`);
+            const file = await rl.question(`File name `)
+            actual_file_name = file;
+            await rl.close();
+            await download_single_video(url, file);
             break;
         case 2:
             // FIXME: rl.question can be used in a one-liner if you use async
