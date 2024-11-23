@@ -65,24 +65,17 @@ async function download_video() {
             process.exit(3);
             break
         case 1:
-            const url = await rl.question(`Website URL`);
-            const file = await rl.question(`File name `)
-            actual_file_name = file;
+            const url_1 = await rl.question(`Website URL`);
+            const file_1 = await rl.question(`File name `)
+            actual_file_name = file_1;
             await rl.close();
-            await download_single_video(url, file);
+            await download_single_video(url_1, file_1);
             break;
         case 2:
-            // FIXME: rl.question can be used in a one-liner if you use async
-            rl.question(`Playlist URL`, url => {
-                rl.question(`Output folder name`, folder => {
-                    rl.close();
-                    waitForLock().then(() => {
-                        // FIXME: Fix empty output here
-                        navigate_playlist(url, folder).then(() => {
-                        });
-                    });
-                });
-            });
+            const url_2 = await rl.question(`Playlist URL`);
+            const folder_2 = await rl.question(`Output folder name`);
+            await rl.close();
+            await navigate_playlist(url_2, folder_2);
             break;
         case 3:
             rl.question(`Playlist URL`, url => {
