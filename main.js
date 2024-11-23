@@ -80,7 +80,7 @@ async function download_video() {
         case 3:
             const url_3 = await rl.question(`Playlist URL`);
             const folder_3 = await rl.question(`Output folder name`);
-            const length_3 = rl.question(`Playlist length`);
+            const length_3 = await rl.question(`Playlist length`);
             await rl.close();
             await download_playlist(url_3, folder_3, length_3);
             break;
