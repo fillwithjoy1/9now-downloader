@@ -74,6 +74,18 @@ def cleanup(temp_name: str):
         pass
 
 
+def sanitize_file_string(input_filename: str) -> str:
+    # Substitute the illegal characters inside Windows file system with the dash
+    illegal_characters: str = '<>:"/\|?*'
+    substitute_character: str = "-"
+    return_character: str = ""
+    for character in input_filename:
+        if character in illegal_characters:
+            return_character += substitute_character
+        else:
+            return_character += character
+    return return_character
+
 def main(video_url: str, license_url: str, file_name: str, temp_name: str):
     pssh_key = download_video_and_pssh(video_url, temp_name)
     print("Successfully downloaded video and PSSH key")
