@@ -65,22 +65,36 @@ function download_video() {
             break
         case 1:
             rl.question(`Website URL `, url => {
-                rl.question('File name ', file => {
+                rl.question('File name ', async file => {
                     actual_file_name = file;
                     rl.close();
-                    waitForLock().then(async () => {
-                        console.log("Execution started");
-                        await download_single_video(url);
-                    });
+                    // FIXME: Just use one-liners for this one. So much more elegant
+                    console.log("Execution started");
+                    // FIXME: Arguments not implemented properly
+                    await download_single_video(url, file);
                 });
             });
             break;
         case 2:
+            // FIXME: rl.question can be used in a one-liner if you use async
             rl.question(`Playlist URL`, url => {
                 rl.question(`Output folder name`, folder => {
                     rl.close();
                     waitForLock().then(() => {
-                        download_playlist(url, folder).then(() => {
+                        // FIXME: Fix empty output here
+                        navigate_playlist(url, folder).then(() => {
+                        });
+                    });
+                });
+            });
+            break;
+        case 3:
+            rl.question(`Playlist URL`, url => {
+                rl.question(`Output folder name`, folder => {
+                    rl.question(`Playlist length`, length => {
+                        rl.close();
+                        waitForLock().then(async () => {
+                            await download_playlist(url, folder, length);
                         });
                     });
                 });
@@ -89,6 +103,7 @@ function download_video() {
     }
 }
 
+// TODO: Migrate this function into Lock.lock() seamlessly
 function waitForLock() {
     return new Promise(async resolve => {
         while (Lock.status()) {
@@ -122,7 +137,7 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function download_playlist(playlist_url, folder_output) {
+export async function navigate_playlist(playlist_url, folder_output) {
     // Launch the browser and open a new blank page
     const browser = await puppeteer.launch({
         browser: 'firefox',
@@ -154,6 +169,13 @@ export async function download_playlist(playlist_url, folder_output) {
 
     // TODO: Download the videos after retrieving the playlist length
     // FIXME: Unlock the Lock, if needed
+}
+
+async function download_playlist(playlist_url, folder_output, length) {
+    Lock.unlock();
+    for (let i = 1; i <= length; i++) {
+        await download_single_video(`${playlist_url}/episode-${i}`, `Ep ${i} - `, folder_output, true);
+    }
 }
 
 export async function validate_playlist_length(browser, playlist_url) {
@@ -190,9 +212,11 @@ async function timeout_browse(browser, url, timeout) {
     });
 }
 
-export async function download_single_video(website_url, file_name, folder_output = "output") {
+// TODO: Promisify this function maybe
+export async function download_single_video(website_url, file_name = "", folder_output = "output", append_file_name = false) {
 // Launch the browser and open a new blank page
 // TODO: Fix the duplicate code fragments
+    await waitForLock();
     const browser = await puppeteer.launch({
         browser: 'firefox',
         headless: false,
@@ -219,6 +243,7 @@ export async function download_single_video(website_url, file_name, folder_outpu
     await sleep(5000);
 
     page.on("request", async request => {
+        // FIXME: Use case/switch here
         if (request.url().includes("manifest.mpd") && video_link === '' && !request.url().includes("brightcove")) {
             video_link = request.url();
             console.log("Fetch video");
@@ -234,7 +259,8 @@ export async function download_single_video(website_url, file_name, folder_outpu
         }
     });
 
-    if (file_name === undefined) {
+    // FIXME: Two if statements are the same, should be simplified together
+    if (!file_name || append_file_name) {
         await page.goto(website_url, {
             waitUntil: "domcontentloaded",
         });
@@ -242,12 +268,15 @@ export async function download_single_video(website_url, file_name, folder_outpu
         await page.goto(website_url);
     }
 
-    if (file_name === undefined) {
+    // FIXME: Can be simplified to a one-liner
+    if (!file_name || append_file_name) {
+        // FIXME: Pretty sure this works
         console.log("oh I work!")
         const title = await page.$eval('._3JyyHX', t => t.innerHTML);
         console.log(title);
         console.log("Hello!")
         console.log(file_name);
+        file_name += title;
     }
 
     function start_downloads(video_link, license_url, file_name) {
