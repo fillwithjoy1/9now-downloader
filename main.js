@@ -78,16 +78,11 @@ async function download_video() {
             await navigate_playlist(url_2, folder_2);
             break;
         case 3:
-            rl.question(`Playlist URL`, url => {
-                rl.question(`Output folder name`, folder => {
-                    rl.question(`Playlist length`, length => {
-                        rl.close();
-                        waitForLock().then(async () => {
-                            await download_playlist(url, folder, length);
-                        });
-                    });
-                });
-            });
+            const url_3 = await rl.question(`Playlist URL`);
+            const folder_3 = await rl.question(`Output folder name`);
+            const length_3 = rl.question(`Playlist length`);
+            await rl.close();
+            await download_playlist(url_3, folder_3, length_3);
             break;
         default:
             console.log('Invalid choice. Exiting');
@@ -164,6 +159,7 @@ export async function navigate_playlist(playlist_url, folder_output) {
 }
 
 async function download_playlist(playlist_url, folder_output, length) {
+    await waitForLock();
     Lock.unlock();
     for (let i = 1; i <= length; i++) {
         await download_single_video(`${playlist_url}/episode-${i}`, `Ep ${i} - `, folder_output, true);
