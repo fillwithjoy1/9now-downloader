@@ -254,7 +254,7 @@ export async function download_single_video(website_url, file_name, folder_outpu
         if (!tripped) {
             tripped = true;
             browser.close();
-            const command = `python main.py --video_url="${video_link}" --license_url="${license_url}" --file_name="${file_name}"`;
+            const command = `python main.py --video_url="${video_link}" --license_url="${license_url}" --output=${folder_output} --file_name="${file_name}"`;
             console.log("Starting python script")
             exec(command, (error, stdout, stderr) => {
                 if (error) {
