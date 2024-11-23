@@ -27,6 +27,7 @@ async function timeout(delay) {
     })
 }
 
+// FIXME: What the hell does this variable do?
 let actual_file_name = '';
 let video_link = '';
 let license_url = '';
