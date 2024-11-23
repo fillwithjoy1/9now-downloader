@@ -4,7 +4,7 @@
 
 import {exec} from "child_process";
 import puppeteer from 'puppeteer';
-import * as readline from "node:readline";
+import * as readline from "node:readline/promises";
 import * as fs from "node:fs";
 
 // Credentials Manager
@@ -100,6 +100,9 @@ function download_video() {
                 });
             });
             break;
+        default:
+            console.log('Invalid choice. Exiting');
+            process.exit(2);
     }
 }
 
