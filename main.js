@@ -90,25 +90,20 @@ async function download_video() {
     }
 }
 
-// TODO: Migrate this function into Lock.lock() seamlessly
-function waitForLock() {
-    return new Promise(async resolve => {
-        while (Lock.status()) {
-            console.log("Lock is active...")
-            await sleep(3000);
-        }
-        Lock.lock();
-        resolve();
-    });
-}
-
 class Lock {
     static status() {
         return fs.existsSync("node.lock");
     }
 
     static lock() {
-        fs.writeFileSync("node.lock", "");
+        return new Promise(async resolve => {
+            while (this.status()) {
+                console.log("Lock is active...");
+                await sleep(3000);
+            }
+            fs.writeFileSync("node.lock", "");
+            resolve();
+        });
     }
 
     static unlock() {
@@ -159,7 +154,7 @@ export async function navigate_playlist(playlist_url, folder_output) {
 }
 
 async function download_playlist(playlist_url, folder_output, length) {
-    await waitForLock();
+    await Lock.lock();
     Lock.unlock();
     for (let i = 1; i <= length; i++) {
         await download_single_video(`${playlist_url}/episode-${i}`, `Ep ${i} - `, folder_output, true);
@@ -204,7 +199,7 @@ async function timeout_browse(browser, url, timeout) {
 export async function download_single_video(website_url, file_name = "", folder_output = "output", append_file_name = false) {
 // Launch the browser and open a new blank page
 // TODO: Fix the duplicate code fragments
-    await waitForLock();
+    await Lock.lock();
     const browser = await puppeteer.launch({
         browser: 'firefox',
         headless: false,
