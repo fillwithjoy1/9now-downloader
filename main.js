@@ -195,6 +195,50 @@ async function timeout_browse(browser, url, timeout) {
     });
 }
 
+// Handles all browser functions required
+class Browser {
+    // Launch the browser
+    async constructor() {
+        this.browser = await puppeteer.launch({
+            browser: 'firefox',
+            headless: false,
+            timeout: 0,
+            extraPrefsFirefox: {
+                'media.gmp-manager.updateEnabled': true,
+            },
+        });
+        this.page = await this.browser.newPage();
+
+        // Stop the no timeout errors
+        this.noTimeout = {
+            timeout: 0,
+        }
+    }
+
+    // Logs into 9Now
+    login() {
+        return new Promise(async resolve => {
+            await this.page.goto('https://login.nine.com.au/login?client_id=9now-web', this.noTimeout);
+
+            await this.page.type('#input_email', email);
+
+            await this.page.click('button[type="submit"]');
+
+            await this.page.waitForNavigation(this.noTimeout);
+
+            await this.page.type('#input_password', password);
+
+            await this.page.click('button[type="submit"]');
+
+            resolve();
+        });
+    }
+
+    downloadSingleVideo(website_url) {
+
+    }
+}
+
 // TODO: Promisify this function maybe
 export async function download_single_video(website_url, file_name = "", folder_output = "output", append_file_name = false) {
 // Launch the browser and open a new blank page
