@@ -188,13 +188,6 @@ async function go_to_page(browser, url) {
     }
 }
 
-// NOTE: This is a helper function that supposed to fix a timeout issue
-async function timeout_browse(browser, url, timeout) {
-    browser.goto(url).then(() => {
-        return 0
-    });
-}
-
 // Handles all browser functions required
 class Browser {
     // Launch the browser
