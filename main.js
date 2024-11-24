@@ -1,6 +1,4 @@
-// This file powers the magic. It's currently based on rl.question,
-// mainly because I can't make node work easily :(
-// Reliability is not there for this file
+// FIXME: Use camelCase naming conventions
 
 import {exec} from "child_process";
 import puppeteer from 'puppeteer';
@@ -227,8 +225,31 @@ class Browser {
         });
     }
 
-    downloadSingleVideo(website_url) {
+    // Goes to specified link and returns the download video link and license URL required
+    async downloadSingleVideo(website_url) {
+        return new Promise(async resolve => {
+            await this.page.goto(website_url, this.noTimeout);
 
+            this.videoUrl = '';
+            this.licenseUrl = '';
+
+            this.page.on("request", request => {
+                if (request.url().includes("manifest.mpd") && this.video_link === '' && !request.url().includes("brightcove")) {
+                    this.video_link = request.url();
+                    console.log("Fetch video");
+                    console.log(request.url());
+                }
+                if (request.url().includes("license")) {
+                    this.license_url = request.url();
+                    console.log("Fetch License");
+                    console.log(this.license_url);
+                }
+
+                if (this.video_link.length > 0 && this.license_url.length > 0) {
+                    resolve(this.video_link, this.license_url);
+                }
+            });
+        });
     }
 }
 
