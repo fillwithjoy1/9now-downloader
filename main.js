@@ -311,24 +311,18 @@ export async function download_single_video(website_url, file_name = "", folder_
         }
     });
 
-    // FIXME: Two if statements are the same, should be simplified together
     if (!file_name || append_file_name) {
         await page.goto(website_url, {
             waitUntil: "domcontentloaded",
         });
-    } else {
-        await page.goto(website_url);
-    }
-
-    // FIXME: Can be simplified to a one-liner
-    if (!file_name || append_file_name) {
-        // FIXME: Pretty sure this works
         console.log("oh I work!")
         const title = await page.$eval('._3JyyHX', t => t.innerHTML);
         console.log(title);
         console.log("Hello!")
         console.log(file_name);
         file_name += title;
+    } else {
+        await page.goto(website_url);
     }
 
     function start_downloads(video_link, license_url, file_name) {
