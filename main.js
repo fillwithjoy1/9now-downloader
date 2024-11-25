@@ -228,27 +228,38 @@ class Browser {
     // Goes to specified link and returns the download video link and license URL required
     async downloadSingleVideo(website_url) {
         return new Promise(async resolve => {
+
+            // If we cannot fetch the links within 60 seconds, auto-restart (hopefully fixes ad-breaks)
+            // FIXME: Auto-restarts can and will cause an *infinite loop*
+            this.autoRestart = setTimeout(() => {
+                this.page.off("request", request => this.listenForLinks(request));
+                this.downloadSingleVideo(website_url);
+            }, 60000);
+
             await this.page.goto(website_url, this.noTimeout);
 
             this.videoUrl = '';
             this.licenseUrl = '';
 
-            this.page.on("request", request => {
-                if (request.url().includes("manifest.mpd") && this.video_link === '' && !request.url().includes("brightcove")) {
-                    this.video_link = request.url();
+            this.listenForLinks = request => {
+                if (request.url().includes("manifest.mpd") && this.videoUrl === '' && !request.url().includes("brightcove")) {
+                    this.videoUrl = request.url();
                     console.log("Fetch video");
                     console.log(request.url());
                 }
                 if (request.url().includes("license")) {
-                    this.license_url = request.url();
+                    this.licenseUrl = request.url();
                     console.log("Fetch License");
-                    console.log(this.license_url);
+                    console.log(this.licenseUrl);
                 }
 
-                if (this.video_link.length > 0 && this.license_url.length > 0) {
-                    resolve(this.video_link, this.license_url);
+                if (this.videoUrl.length > 0 && this.licenseUrl.length > 0) {
+                    clearTimeout(this.autoRestart);
+                    resolve(this.videoUrl, this.licenseUrl);
                 }
-            });
+            }
+
+            this.page.on("request", request => this.listenForLinks(request));
         });
     }
 }
