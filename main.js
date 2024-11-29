@@ -57,7 +57,7 @@ rl.question(`Download one video, or an entire playlist? (1, 2) `).then(option =>
     download_video(option);
 });
 
-async function download_video() {
+async function download_video(path) {
     switch (path) {
         case 0:
             process.exit(3);
