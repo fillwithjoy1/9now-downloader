@@ -192,7 +192,14 @@ async function go_to_page(browser, url) {
 // Handles all browser functions required
 class Browser {
     // Launch the browser
-    async constructor() {
+    constructor() {
+        // Stop the no timeout errors
+        this.noTimeout = {
+            timeout: 0,
+        }
+    }
+
+    launch() {
         this.browser = await puppeteer.launch({
             browser: 'firefox',
             headless: false,
@@ -202,11 +209,6 @@ class Browser {
             },
         });
         this.page = await this.browser.newPage();
-
-        // Stop the no timeout errors
-        this.noTimeout = {
-            timeout: 0,
-        }
     }
 
     // Logs into 9Now
