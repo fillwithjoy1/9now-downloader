@@ -18,11 +18,17 @@ if (fs.existsSync("password")) {
     });
 }
 
+// FIXME: Migrate to sleep(ms)
 // Helper timeout function
 async function timeout(delay) {
     return new Promise(resolve => {
         setTimeout(resolve, delay);
     })
+}
+
+// Helper function to sleep async code
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 // FIXME: What the hell does this variable do?
@@ -113,10 +119,7 @@ class Lock {
     }
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
+// Used to URL scan a whole function
 export async function navigate_playlist(playlist_url, folder_output) {
     // Launch the browser and open a new blank page
     const browser = await puppeteer.launch({
