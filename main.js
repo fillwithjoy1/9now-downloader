@@ -302,12 +302,12 @@ export async function download_single_video(website_url, file_name = "", folder_
 
     await sleep(5000);
 
-    await stage_two(page, file_name, append_file_name, website_url, browser);
+    await stage_two(page, file_name, append_file_name, website_url, browser, folder_output);
 }
 
-async function stage_two(page, file_name, append_file_name, website_url, browser) {
+async function stage_two(page, file_name, append_file_name, website_url, browser, folder_output) {
     // NOTE: Yikes too many variables
-    page.on("request", async request => listenForLinks(request, file_name, browser));
+    page.on("request", async request => listenForLinks(request, file_name, browser, folder_output));
 
     await page.goto(website_url, {
         waitUntil: "domcontentloaded",
@@ -322,7 +322,7 @@ async function stage_two(page, file_name, append_file_name, website_url, browser
     }
 }
 
-function listenForLinks(request, file_name, browser) {
+function listenForLinks(request, file_name, browser, folder_output) {
     // FIXME: Use case/switch here
     if (request.url().includes("manifest.mpd") && video_link === '' && !request.url().includes("brightcove")) {
         video_link = request.url();
@@ -335,11 +335,11 @@ function listenForLinks(request, file_name, browser) {
         console.log(license_url);
     }
     if (video_link.length > 0 && license_url.length > 0) {
-        start_downloads(video_link, license_url, file_name, browser)
+        start_downloads(video_link, license_url, file_name, browser, folder_output)
     }
 }
 
-function start_downloads(video_link, license_url, file_name, browser) {
+function start_downloads(video_link, license_url, file_name, browser, folder_output) {
     if (!tripped) {
         tripped = true;
         browser.close();
