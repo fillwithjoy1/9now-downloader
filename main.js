@@ -242,6 +242,7 @@ class Browser {
             this.licenseUrl = '';
 
             this.listenForLinks = request => {
+                // FIXME: Use case/switch here
                 if (request.url().includes("manifest.mpd") && this.videoUrl === '' && !request.url().includes("brightcove")) {
                     this.videoUrl = request.url();
                     console.log("Fetch video");
@@ -294,22 +295,7 @@ export async function download_single_video(website_url, file_name = "", folder_
 
     await sleep(5000);
 
-    page.on("request", async request => {
-        // FIXME: Use case/switch here
-        if (request.url().includes("manifest.mpd") && video_link === '' && !request.url().includes("brightcove")) {
-            video_link = request.url();
-            console.log("Fetch video");
-            console.log(request.url());
-        }
-        if (request.url().includes("license")) {
-            license_url = request.url();
-            console.log("Fetch License");
-            console.log(license_url);
-        }
-        if (video_link.length > 0 && license_url.length > 0) {
-            start_downloads(video_link, license_url, file_name)
-        }
-    });
+    page.on("request", async request => listenForLinks(request));
 
     await page.goto(website_url, {
         waitUntil: "domcontentloaded",
@@ -341,5 +327,22 @@ export async function download_single_video(website_url, file_name = "", folder_
                 Lock.unlock();
             });
         }
+    }
+}
+
+function listenForLinks(request) {
+    // FIXME: Use case/switch here
+    if (request.url().includes("manifest.mpd") && video_link === '' && !request.url().includes("brightcove")) {
+        video_link = request.url();
+        console.log("Fetch video");
+        console.log(request.url());
+    }
+    if (request.url().includes("license")) {
+        license_url = request.url();
+        console.log("Fetch License");
+        console.log(license_url);
+    }
+    if (video_link.length > 0 && license_url.length > 0) {
+        start_downloads(video_link, license_url, file_name)
     }
 }
