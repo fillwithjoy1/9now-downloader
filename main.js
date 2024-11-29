@@ -192,7 +192,7 @@ async function go_to_page(browser, url) {
 }
 
 async function browser_mass_download(playlist_url, folder_output, length) {
-    const browser = await new Browser();
+    const browser = await Browser.create();
     await Lock.lock();
     Lock.unlock();
     for (let i = 1; i <= length; i++) {
@@ -205,13 +205,16 @@ async function browser_mass_download(playlist_url, folder_output, length) {
 class Browser {
     // Launch the browser
     constructor() {
-        return new Promise(resolve => {
-            this.noTimeout = {
-                timeout: 0,
-            }
-            this.launch().then(resolve);
-        });
         // Stop the no timeout errors
+        this.noTimeout = {
+            timeout: 0,
+        }
+    }
+
+    static async create() {
+        const browserInstance = new this();
+        await browserInstance.launch();
+        return browserInstance;
     }
 
     // This function should never be called at all as it's already called using constructor
