@@ -1,4 +1,5 @@
 // FIXME: Use camelCase naming conventions
+// FIXME: Remove like the 100 functions here
 
 import {exec} from "child_process";
 import puppeteer from 'puppeteer';
