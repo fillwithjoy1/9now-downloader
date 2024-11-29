@@ -197,9 +197,10 @@ class Browser {
         this.noTimeout = {
             timeout: 0,
         }
+        this.launch();
     }
 
-    launch() {
+    async launch() {
         this.browser = await puppeteer.launch({
             browser: 'firefox',
             headless: false,
