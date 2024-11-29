@@ -213,6 +213,7 @@ class Browser {
             },
         });
         this.page = await this.browser.newPage();
+        await this.login();
     }
 
     // Logs into 9Now
