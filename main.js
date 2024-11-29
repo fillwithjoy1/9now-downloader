@@ -53,7 +53,7 @@ const rl = readline.createInterface({
 //  It's occurring due to random ad breaks occurring
 // TODO: Get it working in headless mode. So far, we are relying heavily on auto-play to do the work
 //  That will have to be changed
-rl.question(`Download one video, or an entire playlist? (1, 2)`).then(option => {
+rl.question(`Download one video, or an entire playlist? (1, 2) `).then(option => {
     if (["1", "2", "3"].includes(option)) {
         path = Number(option);
         download_video();
@@ -69,22 +69,22 @@ async function download_video() {
             process.exit(3);
             break
         case 1:
-            const url_1 = await rl.question(`Website URL`);
+            const url_1 = await rl.question(`Website URL `);
             const file_1 = await rl.question(`File name `)
             actual_file_name = file_1;
             await rl.close();
             await download_single_video(url_1, file_1);
             break;
         case 2:
-            const url_2 = await rl.question(`Playlist URL`);
-            const folder_2 = await rl.question(`Output folder name`);
+            const url_2 = await rl.question(`Playlist URL `);
+            const folder_2 = await rl.question(`Output folder name `);
             await rl.close();
             await navigate_playlist(url_2, folder_2);
             break;
         case 3:
-            const url_3 = await rl.question(`Playlist URL`);
-            const folder_3 = await rl.question(`Output folder name`);
-            const length_3 = await rl.question(`Playlist length`);
+            const url_3 = await rl.question(`Playlist URL `);
+            const folder_3 = await rl.question(`Output folder name `);
+            const length_3 = await rl.question(`Playlist length `);
             await rl.close();
             await download_playlist(url_3, folder_3, length_3);
             break;
