@@ -196,7 +196,8 @@ async function browser_mass_download(playlist_url, folder_output, length) {
     await Lock.lock();
     Lock.unlock();
     for (let i = 1; i <= length; i++) {
-        console.log(await browser.downloadSingleVideo(`${playlist_url}/episode-${i}`));
+        const test = await browser.downloadSingleVideo(`${playlist_url}/episode-${i}`);
+        console.log(test);
         process.exit(69);
     }
 }
@@ -254,14 +255,16 @@ class Browser {
     async downloadSingleVideo(website_url) {
         return new Promise(async resolve => {
 
+            const page = await this.browser.newPage();
+
             // If we cannot fetch the links within 60 seconds, auto-restart (hopefully fixes ad-breaks)
             // FIXME: Auto-restarts can and will cause an *infinite loop*
             this.autoRestart = setTimeout(() => {
-                this.page.off("request", request => this.listenForLinks(request));
+                page.off("request", request => this.listenForLinks(request));
                 this.downloadSingleVideo(website_url);
             }, 60000);
 
-            await this.page.goto(website_url, this.noTimeout);
+            await page.goto(website_url, this.noTimeout);
 
             this.videoUrl = '';
             this.licenseUrl = '';
@@ -281,12 +284,12 @@ class Browser {
 
                 if (this.videoUrl.length > 0 && this.licenseUrl.length > 0) {
                     clearTimeout(this.autoRestart);
-                    this.page.close();
-                    resolve(this.videoUrl, this.licenseUrl);
+                    page.close();
+                    resolve([this.videoUrl, this.licenseUrl]);
                 }
             }
 
-            this.page.on("request", request => this.listenForLinks(request));
+            page.on("request", request => this.listenForLinks(request));
         });
     }
 }
