@@ -281,6 +281,7 @@ class Browser {
 
                 if (this.videoUrl.length > 0 && this.licenseUrl.length > 0) {
                     clearTimeout(this.autoRestart);
+                    this.page.close();
                     resolve(this.videoUrl, this.licenseUrl);
                 }
             }
