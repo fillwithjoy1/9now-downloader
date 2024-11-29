@@ -291,7 +291,6 @@ class Browser {
     }
 }
 
-// TODO: Promisify this function maybe
 export async function download_single_video(website_url, file_name = "", folder_output = "output", append_file_name = false) {
 // Launch the browser and open a new blank page
 // TODO: Fix the duplicate code fragments
