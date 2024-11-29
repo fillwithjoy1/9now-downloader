@@ -82,6 +82,13 @@ async function download_video(path) {
             await rl.close();
             await download_playlist(url_3, folder_3, length_3);
             break;
+        case 4:
+            const url_4 = await rl.question(`Playlist URL `);
+            const folder_4 = await rl.question(`Output folder name `);
+            const length_4 = await rl.question(`Playlist length `);
+            await rl.close();
+            await browser_mass_download(url_4, folder_4, length_4);
+            break;
         default:
             console.log('Invalid choice. Exiting');
             process.exit(2);
