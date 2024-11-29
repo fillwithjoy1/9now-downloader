@@ -311,6 +311,10 @@ export async function download_single_video(website_url, file_name = "", folder_
         }
     });
 
+    await page.goto(website_url, {
+        waitUntil: "domcontentloaded",
+    });
+
     if (!file_name || append_file_name) {
         await page.goto(website_url, {
             waitUntil: "domcontentloaded",
