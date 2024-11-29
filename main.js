@@ -203,19 +203,15 @@ async function browser_mass_download(playlist_url, folder_output, length) {
 
 // Handles all browser functions required
 class Browser {
-
     // Launch the browser
     constructor() {
-        this.noTimeout = {
-            timeout: 0,
-        }
-    }
-
-    // Creates new browser instance
-    static async create() {
-        const browserInstance = new Browser();
-        await browserInstance.launch();
-        return browserInstance;
+        return new Promise(resolve => {
+            this.noTimeout = {
+                timeout: 0,
+            }
+            this.launch().then(resolve);
+        });
+        // Stop the no timeout errors
     }
 
     // This function should never be called at all as it's already called using constructor
