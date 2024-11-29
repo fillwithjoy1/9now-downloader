@@ -346,3 +346,23 @@ function listenForLinks(request) {
         start_downloads(video_link, license_url, file_name)
     }
 }
+
+function start_downloads(video_link, license_url, file_name) {
+    if (!tripped) {
+        tripped = true;
+        browser.close();
+        const command = `python main.py --video_url="${video_link}" --license_url="${license_url}" --output=${folder_output} --file_name="${file_name}"`;
+        console.log("Starting python script")
+        exec(command, (error, stdout, stderr) => {
+            if (error) {
+                console.log(stderr);
+            }
+
+            if (stderr) {
+                console.log(stderr);
+            }
+            console.log(stdout);
+            Lock.unlock();
+        });
+    }
+}
