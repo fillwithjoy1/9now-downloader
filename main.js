@@ -54,7 +54,7 @@ const rl = readline.createInterface({
 // TODO: Get it working in headless mode. So far, we are relying heavily on auto-play to do the work
 //  That will have to be changed
 rl.question(`Download one video, or an entire playlist? (1, 2) `).then(option => {
-    download_video(option);
+    download_video(Number(option));
 });
 
 async function download_video(path) {
