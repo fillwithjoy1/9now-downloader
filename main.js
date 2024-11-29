@@ -200,10 +200,6 @@ class Browser {
             this.launch().then(resolve);
         });
         // Stop the no timeout errors
-        this.noTimeout = {
-            timeout: 0,
-        }
-        this.launch();
     }
 
     // This function should never be called at all as it's already called using constructor
