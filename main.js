@@ -185,15 +185,19 @@ async function go_to_page(browser, url) {
 
 // Handles all browser functions required
 class Browser {
+
     // Launch the browser
     constructor() {
-        return new Promise(resolve => {
-            this.noTimeout = {
-                timeout: 0,
-            }
-            this.launch().then(resolve);
-        });
-        // Stop the no timeout errors
+        this.noTimeout = {
+            timeout: 0,
+        }
+    }
+
+    // Creates new browser instance
+    static async create() {
+        const browserInstance = new Browser();
+        await browserInstance.launch();
+        return browserInstance;
     }
 
     // This function should never be called at all as it's already called using constructor
