@@ -295,7 +295,12 @@ export async function download_single_video(website_url, file_name = "", folder_
 
     await sleep(5000);
 
-    page.on("request", async request => listenForLinks(request));
+    await stage_two(page, file_name, append_file_name, website_url, browser);
+}
+
+async function stage_two(page, file_name, append_file_name, website_url, browser) {
+    // NOTE: Yikes too many variables
+    page.on("request", async request => listenForLinks(request, file_name, browser));
 
     await page.goto(website_url, {
         waitUntil: "domcontentloaded",
@@ -310,7 +315,7 @@ export async function download_single_video(website_url, file_name = "", folder_
     }
 }
 
-function listenForLinks(request) {
+function listenForLinks(request, file_name, browser) {
     // FIXME: Use case/switch here
     if (request.url().includes("manifest.mpd") && video_link === '' && !request.url().includes("brightcove")) {
         video_link = request.url();
@@ -323,12 +328,11 @@ function listenForLinks(request) {
         console.log(license_url);
     }
     if (video_link.length > 0 && license_url.length > 0) {
-        start_downloads(video_link, license_url, file_name)
+        start_downloads(video_link, license_url, file_name, browser)
     }
 }
 
-function start_downloads(video_link, license_url, file_name) {
-    // FIXME: browser object isn't working. Will need to pass an extra argument for that
+function start_downloads(video_link, license_url, file_name, browser) {
     if (!tripped) {
         tripped = true;
         browser.close();
