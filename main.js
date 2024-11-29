@@ -193,6 +193,12 @@ async function go_to_page(browser, url) {
 class Browser {
     // Launch the browser
     constructor() {
+        return new Promise(resolve => {
+            this.noTimeout = {
+                timeout: 0,
+            }
+            this.launch().then(resolve);
+        });
         // Stop the no timeout errors
         this.noTimeout = {
             timeout: 0,
