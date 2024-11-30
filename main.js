@@ -127,7 +127,6 @@ export async function navigate_playlist(playlist_url, folder_output) {
     const browser = await puppeteer.launch({
         browser: 'firefox',
         headless: false,
-        timeout: 0,
         extraPrefsFirefox: {
             'media.gmp-manager.updateEnabled': true,
         },
