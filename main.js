@@ -317,16 +317,32 @@ export async function download_single_video(website_url, file_name = "", folder_
 
     await sleep(5000);
 
-    await stage_two(page, file_name, append_file_name, website_url, browser, folder_output);
+    // A cool sounding variable that just checks if the stage two of the process has failed, and then auto-restart
+    let rocket_check = '';
+
+    while (rocket_check !== true) {
+        try {
+            await stage_two(page, file_name, append_file_name, website_url, browser, folder_output);
+
+            rocket_check = true;
+        } catch (e) {
+            console.log("Timed out. Retrying...")
+        }
+    }
 }
 
 async function stage_two(page, file_name, append_file_name, website_url, browser, folder_output) {
     return new Promise(async (resolve, reject) => {
 
-        setTimeout(reject, 60000);
+        function cleanup() {
+            clearTimeout(timeout);
+            resolve();
+        }
+
+        const timeout = setTimeout(() => reject(new Error("Timed out after 60 seconds")), 60000);
 
         // NOTE: Yikes too many variables
-        page.on("request", async request => listenForLinks(request, file_name, browser, folder_output));
+        page.on("request", async request => listenForLinks(request, file_name, browser, folder_output, cleanup));
 
         await page.goto(website_url, {
             waitUntil: "domcontentloaded",
@@ -342,7 +358,7 @@ async function stage_two(page, file_name, append_file_name, website_url, browser
     });
 }
 
-function listenForLinks(request, file_name, browser, folder_output) {
+function listenForLinks(request, file_name, browser, folder_output, resolve) {
     // FIXME: Use case/switch here
     if (request.url().includes("manifest.mpd") && video_link === '' && !request.url().includes("brightcove")) {
         video_link = request.url();
@@ -355,6 +371,7 @@ function listenForLinks(request, file_name, browser, folder_output) {
         console.log(license_url);
     }
     if (video_link.length > 0 && license_url.length > 0) {
+        resolve();
         start_downloads(video_link, license_url, file_name, browser, folder_output)
     }
 }
