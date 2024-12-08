@@ -38,11 +38,6 @@ let video_link = '';
 let license_url = '';
 let tripped = false;
 
-// This special variable is a flag to change how the JS code runs
-// When set to 0, it can download stuff individually
-// When set to 1, it can mass-download multiple videos
-let path = 0;
-
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
