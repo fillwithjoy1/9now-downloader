@@ -247,7 +247,7 @@ class Browser {
 
     // Goes to specified link and returns the download video link and license URL required
     async downloadSingleVideo(website_url) {
-        return new Promise(async resolve => {
+        return new Promise(async (resolve, reject) => {
 
             const page = await this.browser.newPage();
 
