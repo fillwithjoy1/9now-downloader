@@ -256,15 +256,15 @@ class Browser {
             const page = await this.browser.newPage();
 
             // If we cannot fetch the links within 60 seconds, auto-restart (hopefully fixes ad-breaks)
-            this.autoRestart = setTimeout(async () => {
-                try {
-                    await page.close();
-                    const result = await this.downloadSingleVideo(website_url);
-                    resolve(result);
-                } catch (err) {
-                    reject(err);
-                }
-            }, 60000);
+            // this.autoRestart = setTimeout(async () => {
+            //     try {
+            //         await page.close();
+            //         const result = await this.downloadSingleVideo(website_url);
+            //         resolve(result);
+            //     } catch (err) {
+            //         reject(err);
+            //     }
+            // }, 60000);
 
             // TODO: ⚠️ This serves as an alternative route where the code will skip this job
             this.autoRestart = setTimeout(() => resolve(), 60000);
