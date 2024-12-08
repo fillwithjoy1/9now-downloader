@@ -326,20 +326,25 @@ export async function download_single_video(website_url, file_name = "", folder_
 }
 
 async function stage_two(page, file_name, append_file_name, website_url, browser, folder_output) {
-    // NOTE: Yikes too many variables
-    page.on("request", async request => listenForLinks(request, file_name, browser, folder_output));
+    return new Promise(async (resolve, reject) => {
 
-    await page.goto(website_url, {
-        waitUntil: "domcontentloaded",
+        setTimeout(reject, 60000);
+
+        // NOTE: Yikes too many variables
+        page.on("request", async request => listenForLinks(request, file_name, browser, folder_output));
+
+        await page.goto(website_url, {
+            waitUntil: "domcontentloaded",
+        });
+
+        if (!file_name || append_file_name) {
+            const title = await page.$eval('._3JyyHX', t => t.innerHTML);
+            console.log(title);
+            console.log("Hello!")
+            console.log(file_name);
+            file_name += title;
+        }
     });
-
-    if (!file_name || append_file_name) {
-        const title = await page.$eval('._3JyyHX', t => t.innerHTML);
-        console.log(title);
-        console.log("Hello!")
-        console.log(file_name);
-        file_name += title;
-    }
 }
 
 function listenForLinks(request, file_name, browser, folder_output) {
