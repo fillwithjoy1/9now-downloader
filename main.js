@@ -187,12 +187,15 @@ async function go_to_page(browser, url) {
 
 async function browser_mass_download(playlist_url, folder_output, length) {
     const browser = await Browser.create();
+    const download_links = [];
     await Lock.lock();
     Lock.unlock();
     for (let i = 1; i <= length; i++) {
         const test = await browser.downloadSingleVideo(`${playlist_url}/episode-${i}`);
-        console.log(test);
+        download_links.push(test);
     }
+    console.log(download_links);
+    process.exit(69);
 }
 
 // Handles all browser functions required
