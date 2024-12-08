@@ -259,10 +259,8 @@ class Browser {
             this.autoRestart = setTimeout(async () => {
                 try {
                     await page.close();
-                    // TODO: This time, lets just skip and move onto the next job
-                    resolve();
-                    // const result = await this.downloadSingleVideo(website_url);
-                    // resolve(result);
+                    const result = await this.downloadSingleVideo(website_url);
+                    resolve(result);
                 } catch (err) {
                     reject(err);
                 }
