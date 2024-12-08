@@ -252,11 +252,6 @@ class Browser {
             const page = await this.browser.newPage();
 
             // If we cannot fetch the links within 60 seconds, auto-restart (hopefully fixes ad-breaks)
-            // FIXME: Auto-restarts can and will cause an *infinite loop*
-            this.autoRestart = setTimeout(() => {
-                page.off("request", request => this.listenForLinks(request));
-                this.downloadSingleVideo(website_url);
-            }, 60000);
 
             await page.goto(website_url, this.noTimeout);
 
