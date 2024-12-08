@@ -339,7 +339,7 @@ async function stage_two(page, file_name, append_file_name, website_url, browser
             resolve();
         }
 
-        const timeout = setTimeout(() => reject(new Error("Timed out after 60 seconds")), 60000);
+        const timeout = setTimeout(() => reject(new Error("Timed out after 60 seconds")), 120000);
 
         // NOTE: Yikes too many variables
         page.on("request", async request => listenForLinks(request, file_name, browser, folder_output, cleanup));
