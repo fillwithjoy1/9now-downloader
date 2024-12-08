@@ -192,7 +192,6 @@ async function browser_mass_download(playlist_url, folder_output, length) {
     for (let i = 1; i <= length; i++) {
         const test = await browser.downloadSingleVideo(`${playlist_url}/episode-${i}`);
         console.log(test);
-        process.exit(69);
     }
 }
 
