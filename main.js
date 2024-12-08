@@ -400,7 +400,7 @@ function start_downloads(video_link, license_url, file_name, browser, folder_out
     }
 }
 
-function python_download_video(video_link, license_url, folder_output, file_name) {
+function python_download_video(video_link, license_url, folder_output = "output", file_name) {
     const command = `python main.py --video_url="${video_link}" --license_url="${license_url}" --output=${folder_output} --file_name="${file_name}"`;
     exec(command, (error, stdout, stderr) => {
         if (error) {
