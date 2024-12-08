@@ -285,6 +285,7 @@ class Browser {
 
                 if (this.videoUrl.length > 0 && this.licenseUrl.length > 0) {
                     clearTimeout(this.autoRestart);
+                    // FIXME: This is not working
                     await page.close();
                     resolve([this.videoUrl, this.licenseUrl]);
                 }
