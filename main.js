@@ -266,7 +266,7 @@ class Browser {
             this.videoUrl = '';
             this.licenseUrl = '';
 
-            this.listenForLinks = request => {
+            this.listenForLinks = async request => {
                 // FIXME: Use case/switch here
                 if (request.url().includes("manifest.mpd") && this.videoUrl === '' && !request.url().includes("brightcove")) {
                     this.videoUrl = request.url();
