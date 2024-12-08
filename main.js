@@ -406,16 +406,19 @@ function start_downloads(video_link, license_url, file_name, browser, folder_out
 }
 
 function python_download_video(video_link, license_url, folder_output = "output", file_name) {
-    const command = `python main.py --video_url="${video_link}" --license_url="${license_url}" --output=${folder_output} --file_name="${file_name}"`;
-    exec(command, (error, stdout, stderr) => {
-        if (error) {
-            console.error(error);
-        }
+    return new Promise(resolve => {
+        const command = `python main.py --video_url="${video_link}" --license_url="${license_url}" --output=${folder_output} --file_name="${file_name}"`;
+        exec(command, (error, stdout, stderr) => {
+            if (error) {
+                console.error(error);
+            }
 
-        if (stderr) {
-            console.error(stderr);
-        }
-        console.log(stdout);
-        Lock.unlock();
-    })
+            if (stderr) {
+                console.error(stderr);
+            }
+            console.log(stdout);
+            Lock.unlock();
+            resolve();
+        })
+    });
 }
