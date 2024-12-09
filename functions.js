@@ -1,6 +1,7 @@
 // What does this file do? Well it contains functions that are used in jobs.ts
 // Why? Because calling functions from there wakes up rl.question and that's not good
 // Yes, soon I hope to migrate a lot of the stuff here
+// TODO: Migrate stuff from main.js
 
 import puppeteer from "puppeteer";
 import {exec} from "child_process";
