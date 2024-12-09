@@ -156,3 +156,28 @@ function python_download_video(video_link, license_url, folder_output = "output"
         })
     });
 }
+
+class Lock {
+    static status() {
+        return fs.existsSync("node.lock");
+    }
+
+    static lock() {
+        return new Promise(async resolve => {
+            while (this.status()) {
+                console.log("Lock is active...");
+                await sleep(3000);
+            }
+            fs.writeFileSync("node.lock", "");
+            resolve();
+        });
+    }
+
+    static unlock() {
+        try {
+            fs.unlinkSync("node.lock");
+        } catch (e) {
+            console.warn(e);
+        }
+    }
+}
