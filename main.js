@@ -185,7 +185,7 @@ async function go_to_page(browser, url) {
     }
 }
 
-async function browser_mass_download(playlist_url, folder_output, length) {
+export async function browser_mass_download(playlist_url, folder_output, length) {
     const browser = await Browser.create();
     const download_links = [];
     await Lock.lock();
