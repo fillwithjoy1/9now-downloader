@@ -2,5 +2,39 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Jobs schema",
   "description": "A schema describing how jobs should be generated",
-  "type": "object"
+  "type": "object",
+  "properties": {
+    "jobs": {
+      "description": "A collection of jobs inside an array",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          },
+          "length": {
+            "type": "integer"
+          },
+          "folder_name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "link",
+          "length",
+          "folder_name"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "jobs"
+  ],
+  "additionalProperties": false
 }
