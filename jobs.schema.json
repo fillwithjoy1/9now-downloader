@@ -28,8 +28,7 @@
           "link",
           "length",
           "folder_name"
-        ],
-        "additionalProperties": false
+        ]
       }
     }
   },
