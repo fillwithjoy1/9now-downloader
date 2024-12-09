@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Jobs schema",
+  "description": "A schema describing how jobs should be generated",
+  "type": "object"
+}
