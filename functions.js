@@ -181,3 +181,7 @@ class Lock {
         }
     }
 }
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
