@@ -292,7 +292,7 @@ class Browser {
                     clearTimeout(this.autoRestart);
                     // FIXME: This is not working
                     await page.close();
-                    resolve([this.videoUrl, this.licenseUrl]);
+                    resolve([this.videoUrl, this.licenseUrl, title]);
                 }
             }
 
