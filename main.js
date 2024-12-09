@@ -202,7 +202,7 @@ async function browser_mass_download(playlist_url, folder_output, length) {
 }
 
 // Handles all browser functions required
-class Browser {
+export class Browser {
     // Launch the browser
     constructor() {
         // Stop the no timeout errors
