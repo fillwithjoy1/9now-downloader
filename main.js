@@ -195,7 +195,7 @@ async function browser_mass_download(playlist_url, folder_output, length) {
     }
     // FIXME: We need the ability to detect when we get 404s and extract titles
     for (let i = 0; i < download_links.length; i++) {
-        await python_download_video(download_links[i][0], download_links[i][1], folder_output, `Episode ${i + 1}`);
+        await python_download_video(download_links[i][0], download_links[i][1], folder_output, `Ep ${i + 1} - ${download_links[i][2]}`);
     }
     await Lock.unlock();
     process.exit(69);
