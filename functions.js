@@ -5,6 +5,19 @@
 
 import puppeteer from "puppeteer";
 import {exec} from "child_process";
+import fs from "node:fs";
+
+let email = "";
+let password = "";
+if (fs.existsSync("password")) {
+    fs.readFile("password", "utf8", (err, data) => {
+        if (err) {
+            console.error(err);
+        }
+        email = data.split("\r\n")[0];
+        password = data.split("\r\n")[1];
+    });
+}
 
 export async function browser_mass_download(playlist_url, folder_output, length) {
     const browser = await Browser.create();
