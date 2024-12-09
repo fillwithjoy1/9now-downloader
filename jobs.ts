@@ -1,4 +1,4 @@
-import {browser_mass_download} from "./main";
+import {browser_mass_download} from "./functions";
 import * as fs from "node:fs";
 
 // Defining Types in TS
