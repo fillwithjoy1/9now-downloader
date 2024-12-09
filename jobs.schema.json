@@ -11,16 +11,24 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Name of job"
           },
           "link": {
-            "type": "string"
+            "type": "string",
+            "description": "URL to playlist"
           },
           "length": {
-            "type": "integer"
+            "type": "integer",
+            "description": "Length of playlist"
           },
           "folder_name": {
-            "type": "string"
+            "type": "string",
+            "description": "Folder name to output download contents"
+          },
+          "skip": {
+            "type": "boolean",
+            "description": "Whether to skip this job"
           }
         },
         "required": [
