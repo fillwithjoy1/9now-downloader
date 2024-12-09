@@ -7,6 +7,7 @@ import puppeteer from "puppeteer";
 import {exec} from "child_process";
 import fs from "node:fs";
 
+// Credentials manager
 let email = "";
 let password = "";
 if (fs.existsSync("password")) {
