@@ -299,6 +299,10 @@ class Browser {
             page.on("request", request => this.listenForLinks(request));
         });
     }
+
+    async fetchTitle(page) {
+        return await page.$eval('._3JyyHX', t => t.innerHTML);
+    }
 }
 
 export async function download_single_video(website_url, file_name = "", folder_output = "output", append_file_name = false) {
