@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var main_1 = require("./main");
+var functions_1 = require("./functions");
 var fs = require("node:fs");
 if (fs.existsSync("jobs.json")) {
     fs.readFile("jobs.json", "utf8", function (err, data) {
@@ -12,7 +12,7 @@ if (fs.existsSync("jobs.json")) {
             if (jobs.jobs[i].skip) {
                 continue;
             }
-            (0, main_1.browser_mass_download)(jobs.jobs[i].link, jobs.jobs[i].folder_name, jobs.jobs[i].length);
+            (0, functions_1.browser_mass_download)(jobs.jobs[i].link, jobs.jobs[i].folder_name, jobs.jobs[i].length);
         }
     });
 }
