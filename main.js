@@ -420,7 +420,6 @@ function python_download_video(video_link, license_url, folder_output = "output"
                 console.error(stderr);
             }
             console.log(stdout);
-            Lock.unlock();
             resolve();
         })
     });
