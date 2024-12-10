@@ -6,10 +6,17 @@ import {exec} from "child_process";
 import fs from "node:fs";
 
 // Internal function that enables logging to console if enabled
-function log(data) {
+function log(data, type) {
     // Values allowed are "debug", "info" or "none"
     const logging = "info";
-    if (logging) console.log(data);
+    switch (type) {
+        case "debug":
+            if (logging === "debug") console.log(data);
+            break;
+        case "info":
+            if (logging !== "none") console.log(data);
+            break;
+    }
 }
 
 // Credentials manager
@@ -129,9 +136,8 @@ export class Browser {
 
                 if (this.videoUrl.length > 0 && this.licenseUrl.length > 0) {
                     clearTimeout(this.autoRestart);
-                    const title = await this.fetchTitle(page);
-                    // FIXME: This is not working
                     await page.close();
+                    const title = await this.fetchTitle(page);
                     resolve([this.videoUrl, this.licenseUrl, title]);
                 }
             }
