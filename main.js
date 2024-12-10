@@ -71,13 +71,6 @@ async function download_video(path) {
             await rl.close();
             await navigate_playlist(url_2, folder_2);
             break;
-        case 3:
-            const url_3 = await rl.question(`Playlist URL `);
-            const folder_3 = await rl.question(`Output folder name `);
-            const length_3 = await rl.question(`Playlist length `);
-            await rl.close();
-            await download_playlist(url_3, folder_3, length_3);
-            break;
         case 4:
             const url_4 = await rl.question(`Playlist URL `);
             const folder_4 = await rl.question(`Output folder name `);
