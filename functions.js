@@ -113,9 +113,6 @@ export class Browser {
             //     }
             // }, 60000);
 
-            // TODO: ⚠️ This serves as an alternative route where the code will skip this job
-            this.autoRestart = setTimeout(() => resolve(), 60000);
-
             await page.goto(website_url, this.noTimeout);
 
             this.videoUrl = '';
