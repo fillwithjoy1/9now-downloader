@@ -5,6 +5,7 @@ import {exec} from "child_process";
 import puppeteer from 'puppeteer';
 import * as readline from "node:readline/promises";
 import * as fs from "node:fs";
+import {browser_mass_download} from "./functions.js";
 
 // Credentials Manager
 let email = "";
