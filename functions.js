@@ -105,14 +105,14 @@ export class Browser {
 
             const page = await this.browser.newPage();
 
+            await page.goto(website_url, this.noTimeout);
+
             // Check if video just doesn't exist after 60 seconds, then output no info
             this.autoRestart = setTimeout(async () => {
                 if (await this.check404(page)) {
                     resolve(["", "", ""]);
                 }
             }, 60000);
-
-            await page.goto(website_url, this.noTimeout);
 
             this.videoUrl = '';
             this.licenseUrl = '';
