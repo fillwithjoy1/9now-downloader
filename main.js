@@ -150,14 +150,6 @@ export async function navigate_playlist(playlist_url, folder_output) {
     // FIXME: Unlock the Lock, if needed
 }
 
-async function download_playlist(playlist_url, folder_output, length) {
-    await Lock.lock();
-    Lock.unlock();
-    for (let i = 1; i <= length; i++) {
-        await download_single_video(`${playlist_url}/episode-${i}`, `Ep ${i} - `, folder_output, true);
-    }
-}
-
 export async function validate_playlist_length(browser, playlist_url) {
     // NOTE: This method is so bad, it could be improved massively
     //  Especially with how we are receiving constant timeout errors
