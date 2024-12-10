@@ -18,7 +18,7 @@ interface ScanList {
 }
 
 interface JobSchema {
-    playlist: Playlist[];
+    playlists: Playlist[];
     scan: ScanList[];
 }
 
@@ -29,15 +29,15 @@ async function main(): Promise<void> {
     if (fs.existsSync("jobs.json")) {
         const data = fs.readFileSync("jobs.json").toString();
         const jobs: JobSchema = JSON.parse(data);
-        console.log(`💡 Found ${jobs.playlist.length} jobs to do`);
-        for (let i = 0; i < jobs.playlist.length; i++) {
-            if (jobs.playlist[i].skip === true) {
-                console.log(`🦘 Skipping job ${jobs.playlist[i].name}`)
+        console.log(`💡 Found ${jobs.playlists.length} jobs to do`);
+        for (let i = 0; i < jobs.playlists.length; i++) {
+            if (jobs.playlists[i].skip === true) {
+                console.log(`🦘 Skipping job ${jobs.playlists[i].name}`)
                 continue;
             }
-            console.log(`⚒️ Starting job ${jobs.playlist[i].name}`);
-            await browser_mass_download(jobs.playlist[i].link, jobs.playlist[i].folder_name, jobs.playlist[i].length);
-            console.log(`✅ Finished job successfully, ${i + 1}/${jobs.playlist.length}`)
+            console.log(`⚒️ Starting job ${jobs.playlists[i].name}`);
+            await browser_mass_download(jobs.playlists[i].link, jobs.playlists[i].folder_name, jobs.playlists[i].length);
+            console.log(`✅ Finished job successfully, ${i + 1}/${jobs.playlists.length}`)
         }
 
 
