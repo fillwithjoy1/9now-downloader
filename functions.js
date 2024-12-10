@@ -92,6 +92,8 @@ export class Browser {
 
             await this.page.click('button[type="submit"]');
 
+            log("👤 Logged in!")
+
             resolve();
         });
     }
