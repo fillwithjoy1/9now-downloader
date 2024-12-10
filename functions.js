@@ -7,8 +7,8 @@ import fs from "node:fs";
 
 // Internal function that enables logging to console if enabled
 function log(data) {
-    // Modify this variable to turn on console logging
-    const logging = false;
+    // Values allowed are "debug", "info" or "none"
+    const logging = "info";
     if (logging) console.log(data);
 }
 
