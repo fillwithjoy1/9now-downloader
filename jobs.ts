@@ -2,7 +2,7 @@ import {browser_mass_download} from "./functions";
 import * as fs from "node:fs";
 
 // Define job types in TS
-interface Job {
+interface Playlist {
     name: string;
     link: string;
     length: number;
@@ -10,8 +10,16 @@ interface Job {
     skip?: boolean;
 }
 
+interface ScanList {
+    name: string;
+    link: string;
+    folder_name: string;
+    skip?: boolean;
+}
+
 interface JobSchema {
-    jobs: Job[];
+    playlist: Playlist[];
+    scan: ScanList[];
 }
 
 main().then();

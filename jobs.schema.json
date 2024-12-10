@@ -38,9 +38,37 @@
           "folder_name"
         ]
       }
+    },
+    "scan": {
+      "description": "A collection of links that should be scanned by the program",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of job"
+          },
+          "link": {
+            "type": "string",
+            "description": "Link of playlist to scan"
+          },
+          "folder_name": {
+            "type": "string",
+            "description": "Name of folder to output files to"
+          },
+          "skip": {
+            "type": "boolean",
+            "description": "Whether to skip this job or not"
+          }
+        },
+        "required": [
+          "name",
+          "link",
+          "folder_name"
+        ]
+      }
     }
   },
-  "required": [
-    "playlists"
-  ]
+  "required": []
 }
