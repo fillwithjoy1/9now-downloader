@@ -125,13 +125,15 @@ export class Browser {
                 // FIXME: Use case/switch here
                 if (request.url().includes("manifest.mpd") && this.videoUrl === '' && !request.url().includes("brightcove")) {
                     this.videoUrl = request.url();
-                    log("Fetch video");
-                    log(request.url());
+                    log("📽️ Video found");
+                    log("Fetch video", "debug");
+                    log(request.url(), "debug");
                 }
-                if (request.url().includes("license")) {
+                if (request.url().includes("license", "debug")) {
                     this.licenseUrl = request.url();
-                    log("Fetch License");
-                    log(this.licenseUrl);
+                    log("💳 License obtained", "info");
+                    log("Fetch License", "debug");
+                    log(this.licenseUrl, "debug");
                 }
 
                 if (this.videoUrl.length > 0 && this.licenseUrl.length > 0) {
@@ -162,7 +164,7 @@ export function python_download_video(video_link, license_url, folder_output = "
             if (stderr) {
                 console.error(stderr);
             }
-            log(stdout);
+            log(stdout, "debug");
             resolve();
         })
     });
