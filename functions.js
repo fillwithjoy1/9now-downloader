@@ -110,7 +110,7 @@ export class Browser {
                 if (await this.check404(page)) {
                     resolve(["", "", ""]);
                 }
-            });
+            }, 60000);
 
             await page.goto(website_url, this.noTimeout);
 
