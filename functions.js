@@ -170,7 +170,7 @@ export class Lock {
     static lock() {
         return new Promise(async resolve => {
             while (this.status()) {
-                log("Lock is active...");
+                console.warn("Lock is active...");
                 await sleep(3000);
             }
             fs.writeFileSync("node.lock", "");
