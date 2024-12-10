@@ -36,7 +36,7 @@ export async function browser_mass_download(playlist_url, folder_output, length)
     process.exit(69);
 }
 
-class Browser {
+export class Browser {
     // Launch the browser
     constructor() {
         // Stop the no timeout errors
@@ -140,7 +140,7 @@ class Browser {
     }
 }
 
-function python_download_video(video_link, license_url, folder_output = "output", file_name) {
+export function python_download_video(video_link, license_url, folder_output = "output", file_name) {
     return new Promise(resolve => {
         const command = `python main.py --video_url="${video_link}" --license_url="${license_url}" --output=${folder_output} --file_name="${file_name}"`;
         exec(command, (error, stdout, stderr) => {
@@ -157,7 +157,7 @@ function python_download_video(video_link, license_url, folder_output = "output"
     });
 }
 
-class Lock {
+export class Lock {
     static status() {
         return fs.existsSync("node.lock");
     }
@@ -182,6 +182,6 @@ class Lock {
     }
 }
 
-function sleep(ms) {
+export function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
