@@ -166,7 +166,7 @@ async function go_to_page(browser, url) {
     });
 
     while (await browser.title() === title) {
-        await timeout(1000);
+        await sleep(1000);
         console.log(title);
     }
 }
