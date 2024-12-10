@@ -15,7 +15,7 @@ interface JobSchema {
     jobs: Job[];
 }
 
-main()
+main().then();
 
 async function main(): Promise<void> {
     if (fs.existsSync("jobs.json")) {
