@@ -1,8 +1,7 @@
 import {browser_mass_download} from "./functions";
 import * as fs from "node:fs";
 
-// Defining Types in TS
-
+// Define job types in TS
 interface Job {
     name: string;
     link: string;
