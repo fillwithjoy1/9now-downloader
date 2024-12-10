@@ -128,7 +128,6 @@ export class Browser {
                 }
                 if (request.url().includes("license", "debug")) {
                     this.licenseUrl = request.url();
-                    log("💳 License obtained", "info");
                     log("Fetch License", "debug");
                     log(this.licenseUrl, "debug");
                 }
