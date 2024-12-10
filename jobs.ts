@@ -24,6 +24,7 @@ interface JobSchema {
 
 main().then();
 
+// TODO: Add implementation for website mass-scans
 async function main(): Promise<void> {
     if (fs.existsSync("jobs.json")) {
         const data = fs.readFileSync("jobs.json").toString();
