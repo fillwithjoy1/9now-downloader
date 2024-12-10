@@ -147,6 +147,10 @@ export class Browser {
     async fetchTitle(page) {
         return await page.$eval('._3JyyHX', t => t.innerHTML);
     }
+
+    async check404(page) {
+        return (await page.title() === "Page not found");
+    }
 }
 
 export function python_download_video(video_link, license_url, folder_output = "output", file_name) {
