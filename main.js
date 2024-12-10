@@ -20,14 +20,6 @@ if (fs.existsSync("password")) {
     });
 }
 
-// FIXME: Migrate to sleep(ms)
-// Helper timeout function
-async function timeout(delay) {
-    return new Promise(resolve => {
-        setTimeout(resolve, delay);
-    })
-}
-
 // Helper function to sleep async code
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
