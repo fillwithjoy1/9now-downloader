@@ -4,8 +4,8 @@
   "description": "A schema describing how jobs should be generated",
   "type": "object",
   "properties": {
-    "jobs": {
-      "description": "A collection of jobs inside an array",
+    "playlists": {
+      "description": "A collection of defined playlists inside an array",
       "type": "array",
       "items": {
         "type": "object",
@@ -41,6 +41,6 @@
     }
   },
   "required": [
-    "jobs"
+    "playlists"
   ]
 }
