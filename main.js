@@ -20,11 +20,6 @@ if (fs.existsSync("password")) {
     });
 }
 
-// Helper function to sleep async code
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 // FIXME: What the hell does this variable do?
 let actual_file_name = '';
 let video_link = '';
