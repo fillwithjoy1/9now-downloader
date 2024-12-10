@@ -41,31 +41,38 @@ var fs = require("node:fs");
 main();
 function main() {
     return __awaiter(this, void 0, void 0, function () {
+        var data, jobs, i;
         return __generator(this, function (_a) {
-            if (fs.existsSync("jobs.json")) {
-                fs.readFile("jobs.json", "utf8", function (err, data) {
-                    console.log("📖 Reading jobs.json file");
-                    if (err) {
-                        console.error(err);
-                    }
-                    var jobs = JSON.parse(data);
+            switch (_a.label) {
+                case 0:
+                    if (!fs.existsSync("jobs.json")) return [3 /*break*/, 5];
+                    data = fs.readFileSync("jobs.json").toString();
+                    jobs = JSON.parse(data);
                     console.log("\uD83D\uDCA1 Found ".concat(jobs.jobs.length, " jobs to do"));
-                    for (var i = 0; i < jobs.jobs.length; i++) {
-                        if (jobs.jobs[i].skip) {
-                            console.log("\uD83E\uDD98 Skipping job ".concat(jobs.jobs[i].name));
-                            continue;
-                        }
-                        console.log("\u2692\uFE0F Starting job ".concat(jobs.jobs[i].name));
-                        (0, functions_1.browser_mass_download)(jobs.jobs[i].link, jobs.jobs[i].folder_name, jobs.jobs[i].length);
-                        console.log("\u2705 Finished job successfully, ".concat(i + 1, "/").concat(jobs.jobs.length));
+                    i = 0;
+                    _a.label = 1;
+                case 1:
+                    if (!(i < jobs.jobs.length)) return [3 /*break*/, 4];
+                    if (jobs.jobs[i].skip === true) {
+                        console.log("\uD83E\uDD98 Skipping job ".concat(jobs.jobs[i].name));
+                        return [3 /*break*/, 3];
                     }
-                });
+                    console.log("\u2692\uFE0F Starting job ".concat(jobs.jobs[i].name));
+                    return [4 /*yield*/, (0, functions_1.browser_mass_download)(jobs.jobs[i].link, jobs.jobs[i].folder_name, jobs.jobs[i].length)];
+                case 2:
+                    _a.sent();
+                    console.log("\u2705 Finished job successfully, ".concat(i + 1, "/").concat(jobs.jobs.length));
+                    _a.label = 3;
+                case 3:
+                    i++;
+                    return [3 /*break*/, 1];
+                case 4: return [3 /*break*/, 6];
+                case 5:
+                    console.log("There is no jobs.json created");
+                    console.log("Create a jobs.json file to run a download job as needed");
+                    _a.label = 6;
+                case 6: return [2 /*return*/];
             }
-            else {
-                console.log("There is no jobs.json created");
-                console.log("Create a jobs.json file to run a download job as needed");
-            }
-            return [2 /*return*/];
         });
     });
 }
