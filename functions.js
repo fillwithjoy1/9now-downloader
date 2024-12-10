@@ -123,7 +123,6 @@ export class Browser {
             this.listenForLinks = async request => {
                 if (request.url().includes("manifest.mpd") && this.videoUrl === '' && !request.url().includes("brightcove")) {
                     this.videoUrl = request.url();
-                    log("📽️ Video found");
                     log("Fetch video", "debug");
                     log(request.url(), "debug");
                 }
