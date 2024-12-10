@@ -1,11 +1,16 @@
 // What does this file do? Well it contains functions that are used in jobs.ts
 // Why? Because calling functions from there wakes up rl.question and that's not good
-// Yes, soon I hope to migrate a lot of the stuff here
-// TODO: Migrate stuff from main.js
 
 import puppeteer from "puppeteer";
 import {exec} from "child_process";
 import fs from "node:fs";
+
+// Internal function that enables logging to console if enabled
+function log(data) {
+    // Modify this variable to turn on console logging
+    const logging = false;
+    if (logging) console.log(data);
+}
 
 // Credentials manager
 let email = "";
@@ -113,13 +118,13 @@ export class Browser {
                 // FIXME: Use case/switch here
                 if (request.url().includes("manifest.mpd") && this.videoUrl === '' && !request.url().includes("brightcove")) {
                     this.videoUrl = request.url();
-                    console.log("Fetch video");
-                    console.log(request.url());
+                    log("Fetch video");
+                    log(request.url());
                 }
                 if (request.url().includes("license")) {
                     this.licenseUrl = request.url();
-                    console.log("Fetch License");
-                    console.log(this.licenseUrl);
+                    log("Fetch License");
+                    log(this.licenseUrl);
                 }
 
                 if (this.videoUrl.length > 0 && this.licenseUrl.length > 0) {
@@ -151,7 +156,7 @@ export function python_download_video(video_link, license_url, folder_output = "
             if (stderr) {
                 console.error(stderr);
             }
-            console.log(stdout);
+            log(stdout);
             resolve();
         })
     });
@@ -165,7 +170,7 @@ export class Lock {
     static lock() {
         return new Promise(async resolve => {
             while (this.status()) {
-                console.log("Lock is active...");
+                log("Lock is active...");
                 await sleep(3000);
             }
             fs.writeFileSync("node.lock", "");
