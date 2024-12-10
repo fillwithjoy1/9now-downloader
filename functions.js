@@ -38,6 +38,7 @@ export async function browser_mass_download(playlist_url, folder_output, length)
     await Lock.lock();
     for (let i = 1; i <= length; i++) {
         const test = await browser.downloadSingleVideo(`${playlist_url}/episode-${i}`);
+        log("🔗 Links obtained!");
         download_links.push(test);
     }
     // FIXME: We need the ability to detect when we get 404s and extract titles
