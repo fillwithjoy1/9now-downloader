@@ -109,9 +109,8 @@ export class Browser {
 
             // Check if video just doesn't exist after 60 seconds, then output no info
             this.autoRestart = setTimeout(async () => {
-                if (await this.check404(page)) {
-                    resolve(["", "", ""]);
-                }
+                log("🕒 Timed out, skipping", "info")
+                resolve(["", "", ""]);
             }, 60000);
 
             this.videoUrl = '';
