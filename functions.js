@@ -136,7 +136,6 @@ export class Browser {
 
                 if (this.videoUrl.length > 0 && this.licenseUrl.length > 0) {
                     clearTimeout(this.autoRestart);
-                    await page.close();
                     const title = await this.fetchTitle(page);
                     resolve([this.videoUrl, this.licenseUrl, title]);
                 }
