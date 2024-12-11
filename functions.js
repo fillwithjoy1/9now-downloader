@@ -36,14 +36,10 @@ export async function browser_mass_download(playlist_url, folder_output, length)
     const browser = await Browser.create();
     const download_links = [];
     await Lock.lock();
-    if (length === 0) {
-        // TODO: Prepare a scan function
-    } else {
-        for (let i = 1; i <= length; i++) {
-            const test = await browser.downloadSingleVideo(`${playlist_url}/episode-${i}`);
-            log("🔗 Fetched links", "info");
-            download_links.push(test);
-        }
+    for (let i = 1; i <= length; i++) {
+        const test = await browser.downloadSingleVideo(`${playlist_url}/episode-${i}`);
+        log("🔗 Fetched links", "info");
+        download_links.push(test);
     }
     log("⬇️ Starting download", "info");
     for (let i = 0; i < download_links.length; i++) {
