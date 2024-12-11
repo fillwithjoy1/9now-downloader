@@ -110,7 +110,8 @@ export class Browser {
 
             // Check if video just doesn't exist after 60 seconds, then output no info
             this.autoRestart = setTimeout(async () => {
-                log("🕒 Timed out, skipping", "info")
+                log("🕒 Timed out, skipping", "info");
+                await page.close();
                 resolve(["", "", ""]);
             }, 60000);
 
