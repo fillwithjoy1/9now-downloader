@@ -80,7 +80,7 @@ def cleanup(temp_name: str):
 
 def sanitize_file_string(input_filename: str) -> str:
     # Substitute the illegal characters inside Windows file system with the dash
-    illegal_characters: str = '<>:"/\|?*'
+    illegal_characters: str = r'<>:"/\|?*'
     substitute_character: str = "-"
     return_character: str = ""
     for character in input_filename:
