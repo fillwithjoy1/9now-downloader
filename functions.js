@@ -47,7 +47,7 @@ export async function browser_mass_download(playlist_url, folder_output, length)
     }
     log("⬇️ Starting download", "info");
     for (let i = 0; i < download_links.length; i++) {
-        await python_download_video(download_links[i][0], download_links[i][1], folder_output, `Ep ${i + 1} - ${download_links[i][2]}`);
+        await python_download_video(download_links[i][0], download_links[i][1], folder_output, `Ep ${i + 1} - ${download_links[i][2]}`, download_links[i][3]);
     }
     await Lock.unlock();
     process.exit(69);
@@ -120,6 +120,7 @@ export class Browser {
 
             this.videoUrl = '';
             this.licenseUrl = '';
+            this.imageUrl = '';
 
             this.listenForLinks = async request => {
                 if (request.url().includes("manifest.mpd") && this.videoUrl === '' && !request.url().includes("brightcove")) {
@@ -133,11 +134,17 @@ export class Browser {
                     log(this.licenseUrl, "debug");
                 }
 
-                if (this.videoUrl.length > 0 && this.licenseUrl.length > 0) {
+                if (request.url().includes("image.jpg")) {
+                    this.imageUrl = request.url();
+                    log("Fetch image", "debug");
+                    log(this.imageUrl, "debug");
+                }
+
+                if (this.videoUrl.length > 0 && this.licenseUrl.length > 0 && this.fetchTitle.length > 0) {
                     clearTimeout(this.autoRestart);
                     const title = await this.fetchTitle(page);
                     await page.close();
-                    resolve([this.videoUrl, this.licenseUrl, title]);
+                    resolve([this.videoUrl, this.licenseUrl, title, this.imageUrl]);
                 }
             }
 
@@ -154,9 +161,9 @@ export class Browser {
     }
 }
 
-export function python_download_video(video_link, license_url, folder_output = "output", file_name) {
+export function python_download_video(video_link, license_url, folder_output = "output", file_name, image_url) {
     return new Promise(resolve => {
-        const command = `python main.py --video_url="${video_link}" --license_url="${license_url}" --output=${folder_output} --file_name="${file_name}"`;
+        const command = `python main.py --video_url="${video_link}" --license_url="${license_url}" --output=${folder_output} --file_name="${file_name}" --image_url="${image_url}"`;
         exec(command, (error, stdout, stderr) => {
             if (error) {
                 console.error(error);

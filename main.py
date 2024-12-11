@@ -60,11 +60,13 @@ def decrypt_files(keys: str, temp_name: str):
 def merge_files(file_name: str, temp_name: str):
     subprocess.run(
         f"ffmpeg -i {temp_name}_merge.mp4 -i {temp_name}_merge.m4a -acodec copy -vcodec copy {temp_name}_final.mp4")
+    subprocess.run(
+        f"ffmpeg -i {temp_name}_final.mp4 -i {temp_name}.jpg -map 1 -map 0 -c copy -disposition:0 attached_pic {temp_name}_out.mp4")
     try:
-        os.rename(f"{temp_name}_final.mp4", f"{output}/{sanitize_file_string(file_name)}.mp4")
+        os.rename(f"{temp_name}_out.mp4", f"{output}/{sanitize_file_string(file_name)}.mp4")
     except FileNotFoundError:
         os.mkdir(output)
-        os.rename(f"{temp_name}_final.mp4", f"{output}/{sanitize_file_string(file_name)}.mp4")
+        os.rename(f"{temp_name}_out.mp4", f"{output}/{sanitize_file_string(file_name)}.mp4")
 
 
 def cleanup(temp_name: str):
@@ -74,6 +76,7 @@ def cleanup(temp_name: str):
         os.remove(f"{temp_name}_merge.mp4")
         os.remove(f"{temp_name}_merge.m4a")
         os.remove(f"{temp_name}_final.mp4")
+        os.remove(f"{temp_name}.jpg")
     except OSError:
         pass
 
@@ -90,7 +93,16 @@ def sanitize_file_string(input_filename: str) -> str:
             return_character += character
     return return_character
 
-def main(video_url: str, license_url: str, file_name: str, temp_name: str):
+
+def download_thumbnail(input_url: str, output_image: str):
+    image = requests.get(input_url).content
+    with open(output_image + ".jpg", "wb") as writer:
+        writer.write(image)
+
+
+def main(video_url: str, license_url: str, file_name: str, temp_name: str, image_url: str):
+    download_thumbnail(image_url, temp_name)
+    print("Downloaded thumbnail")
     pssh_key = download_video_and_pssh(video_url, temp_name)
     print("Successfully downloaded video and PSSH key")
     keys = get_decryption_keys(pssh_key, license_url)
@@ -110,16 +122,19 @@ if __name__ == "__main__":
     parser.add_argument("--license_url", type=str, help="License URL")
     parser.add_argument("--file_name", type=str, help="File name")
     parser.add_argument("--output", type=str, help="Output folder")
+    parser.add_argument("--image_url", type=str, help="Image URL")
     args = parser.parse_args()
     if args.video_url:
         video_url = args.video_url
         license_url = args.license_url
         file_name = args.file_name
         output = args.output
+        image_url = args.image_url
     else:
         video_url = input("Enter video URL: ")
         license_url = input("Enter license URL: ")
         file_name = input("Enter file name: ")
+        image_url = input("Enter image URL: ")
 
     # Create a lock file in the same directory as the script
     lock_path = Path(__file__).with_suffix('.lock')
@@ -127,4 +142,4 @@ if __name__ == "__main__":
 
     # This ensures that only one download goes at a time
     with lock:
-        main(video_url, license_url, file_name, str(rng_temp_name))
+        main(video_url, license_url, file_name, str(rng_temp_name), image_url)
