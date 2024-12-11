@@ -5,6 +5,19 @@ import puppeteer from "puppeteer";
 import {exec} from "child_process";
 import fs from "node:fs";
 
+// Credentials manager
+let email = "";
+let password = "";
+if (fs.existsSync("password")) {
+    fs.readFile("password", "utf8", (err, data) => {
+        if (err) {
+            console.error(err);
+        }
+        email = data.split("\r\n")[0];
+        password = data.split("\r\n")[1];
+    });
+}
+
 // Internal function that enables logging to console if enabled
 function log(data, type) {
     // Values allowed are "debug", "info" or "none"
@@ -17,19 +30,6 @@ function log(data, type) {
             if (logging !== "none") console.log(data);
             break;
     }
-}
-
-// Credentials manager
-let email = "";
-let password = "";
-if (fs.existsSync("password")) {
-    fs.readFile("password", "utf8", (err, data) => {
-        if (err) {
-            console.error(err);
-        }
-        email = data.split("\r\n")[0];
-        password = data.split("\r\n")[1];
-    });
 }
 
 export async function browser_mass_download(playlist_url, folder_output, length) {
