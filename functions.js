@@ -159,6 +159,22 @@ export class Browser {
     async check404(page) {
         return (await page.title() === "Page not found");
     }
+
+    async autoScroll(page) {
+        return new Promise(async resolve => {
+            await page.evaluate(async () => {
+                setTimeout(() => {
+                    clearInterval(timer);
+                    resolve();
+                }, 30000);
+
+                const timer = setInterval(() => {
+                    window.scrollBy(0, 1000);
+                }, 1000);
+            });
+        });
+    }
+
 }
 
 export function python_download_video(video_link, license_url, folder_output = "output", file_name, image_url) {
