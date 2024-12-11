@@ -29,7 +29,7 @@ async function main(): Promise<void> {
                 continue;
             }
             console.log(`⚒️ Starting job ${jobs.jobs[i].name}`);
-            if (jobs.jobs[i].scan === false) {
+            if (!jobs.jobs[i].scan) {
                 await browser_mass_download(jobs.jobs[i].link, jobs.jobs[i].folder_name, jobs.jobs[i].length);
             } else if (jobs.jobs[i].scan === true) {
                 // TODO: Add implementation
