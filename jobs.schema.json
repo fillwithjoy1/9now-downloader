@@ -4,7 +4,7 @@
   "description": "A schema describing how jobs should be generated",
   "type": "object",
   "properties": {
-    "playlists": {
+    "jobs": {
       "description": "A collection of defined playlists inside an array",
       "type": "array",
       "items": {
@@ -29,46 +29,22 @@
           "skip": {
             "type": "boolean",
             "description": "A tag that skips the job"
-          }
-        },
-        "required": [
-          "name",
-          "link",
-          "length",
-          "folder_name"
-        ]
-      }
-    },
-    "scan": {
-      "description": "A collection of links that should be scanned by the program",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Name of job"
           },
-          "link": {
-            "type": "string",
-            "description": "Link of playlist to scan"
-          },
-          "folder_name": {
-            "type": "string",
-            "description": "Name of folder to output files to"
-          },
-          "skip": {
+          "scan": {
             "type": "boolean",
-            "description": "Whether to skip this job or not"
+            "description": "A tag that indicates the browser to scan the webpage. Length property is ignored"
           }
         },
         "required": [
           "name",
           "link",
-          "folder_name"
-        ]
+          "folder_name",
+          "length"
+        ],
+        "additionalProperties": false
       }
     }
   },
-  "required": []
+  "required": [],
+  "additionalProperties": false
 }

@@ -2,24 +2,17 @@ import {browser_mass_download} from "./functions";
 import * as fs from "node:fs";
 
 // Define job types in TS
-interface Playlist {
+interface Job {
     name: string;
     link: string;
     length: number;
     folder_name: string;
     skip?: boolean;
-}
-
-interface ScanList {
-    name: string;
-    link: string;
-    folder_name: string;
-    skip?: boolean;
+    scan?: boolean;
 }
 
 interface JobSchema {
-    playlists: Playlist[];
-    scan: ScanList[];
+    jobs: Job[];
 }
 
 main().then();
@@ -29,15 +22,15 @@ async function main(): Promise<void> {
     if (fs.existsSync("jobs.json")) {
         const data = fs.readFileSync("jobs.json").toString();
         const jobs: JobSchema = JSON.parse(data);
-        console.log(`💡 Found ${jobs.playlists.length} jobs to do`);
-        for (let i = 0; i < jobs.playlists.length; i++) {
-            if (jobs.playlists[i].skip === true) {
-                console.log(`🦘 Skipping job ${jobs.playlists[i].name}`)
+        console.log(`💡 Found ${jobs.jobs.length} jobs to do`);
+        for (let i = 0; i < jobs.jobs.length; i++) {
+            if (jobs.jobs[i].skip === true) {
+                console.log(`🦘 Skipping job ${jobs.jobs[i].name}`)
                 continue;
             }
-            console.log(`⚒️ Starting job ${jobs.playlists[i].name}`);
-            await browser_mass_download(jobs.playlists[i].link, jobs.playlists[i].folder_name, jobs.playlists[i].length);
-            console.log(`✅ Finished job successfully, ${i + 1}/${jobs.playlists.length}`)
+            console.log(`⚒️ Starting job ${jobs.jobs[i].name}`);
+            await browser_mass_download(jobs.jobs[i].link, jobs.jobs[i].folder_name, jobs.jobs[i].length);
+            console.log(`✅ Finished job successfully, ${i + 1}/${jobs.jobs.length}`)
         }
 
 
