@@ -161,7 +161,9 @@ export class Browser {
 
             await this.autoScroll(page);
 
-            console.log(await page.$eval('.GX-Ppj', e => e.href));
+            resolve(page.$$eval('.GX-Ppj', a => {
+                return a.map(a => a.href);
+            }));
         });
     }
 
