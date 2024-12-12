@@ -123,13 +123,19 @@ export class Browser {
 
             await page.goto(website_url, this.noTimeout);
 
-            // Check if video just doesn't exist after 60 seconds, then output no info
+            // Reload page if download task didn't finish after 60 seconds
             this.autoRestart = setTimeout(async () => {
+                log("♻️ Reloading page", "info");
+                await page.reload();
+            }, 60000);
+
+            // If the download task didn't finish after 5 minutes, skip
+            this.autoSkip = setTimeout(async () => {
                 log("🕒 Timed out, skipping", "info");
                 await page.close();
                 // FIXME: reject();
                 reject();
-            }, 60000);
+            });
 
             this.videoUrl = '';
             this.licenseUrl = '';
@@ -155,6 +161,7 @@ export class Browser {
 
                 if (this.videoUrl.length > 0 && this.licenseUrl.length > 0 && this.fetchTitle.length > 0) {
                     clearTimeout(this.autoRestart);
+                    clearTimeout(this.autoSkip);
                     const title = await this.fetchTitle(page);
                     await page.close();
                     resolve([this.videoUrl, this.licenseUrl, title, this.imageUrl]);
