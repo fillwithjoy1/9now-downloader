@@ -49,6 +49,21 @@ export async function browser_mass_download(playlist_url, folder_output, length)
     process.exit(69);
 }
 
+export async function browser_scan_download(playlist_url, folder_output) {
+    const browser = await Browser.create();
+    await Lock.lock();
+    const scanned_links = browser.scanForVideos(playlist_url);
+    const download_links = [];
+    log("🛰️ Scanned for links", "info");
+    for (let i = 0; i <= scanned_links.length; i++) {
+        download_links.push(await browser.downloadSingleVideo(scanned_links[i]));
+        log("🔗 Fetched all links", "info");
+    }
+    for (let i = 0; i < download_links.length; i++) {
+        await python_download_video(download_links[i][0], download_links[i][1], folder_output, download_links[i][2], download_links[i][3]);
+    }
+}
+
 // TODO: Privatise some functions, if possible
 export class Browser {
     // Launch the browser
