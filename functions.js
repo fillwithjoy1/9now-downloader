@@ -102,7 +102,7 @@ export class Browser {
 
     // Goes to specified link and returns the download video link and license URL required
     async downloadSingleVideo(website_url) {
-        return new Promise(async resolve => {
+        return new Promise(async (resolve, reject) => {
 
             const page = await this.browser.newPage();
 
@@ -112,7 +112,8 @@ export class Browser {
             this.autoRestart = setTimeout(async () => {
                 log("🕒 Timed out, skipping", "info");
                 await page.close();
-                resolve(["", "", ""]);
+                // FIXME: reject();
+                reject();
             }, 60000);
 
             this.videoUrl = '';
@@ -150,12 +151,13 @@ export class Browser {
     }
 
     async scanForVideos(website_url) {
-        return new Promise(async resolve => {
+        return new Promise(async (resolve, reject) => {
             const page = await this.browser.newPage();
 
             await page.goto(website_url, this.noTimeout);
 
-            if (await this.check404(page)) resolve();
+            // FIXME: reject();
+            if (await this.check404(page)) reject();
 
             await this.autoScroll(page);
 
