@@ -31,7 +31,7 @@ async function main(): Promise<void> {
             if (!jobs.jobs[i].scan) {
                 await browser_mass_download(jobs.jobs[i].link, jobs.jobs[i].folder_name, jobs.jobs[i].length);
             } else if (jobs.jobs[i].scan === true) {
-                // TODO: Add implementation
+                await browser_scan_download(jobs.jobs[i].link, jobs.jobs[i].folder_name);
             }
             console.log(`✅ Finished job successfully, ${i + 1}/${jobs.jobs.length}`)
         }
