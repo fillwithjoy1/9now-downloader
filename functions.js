@@ -46,7 +46,7 @@ export async function browser_mass_download(playlist_url, folder_output, length)
         await python_download_video(download_links[i][0], download_links[i][1], folder_output, `Ep ${i + 1} - ${download_links[i][2]}`, download_links[i][3]);
     }
     await Lock.unlock();
-    process.exit(69);
+    process.exit(0);
 }
 
 export async function browser_scan_download(playlist_url, folder_output) {
