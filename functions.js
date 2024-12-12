@@ -149,6 +149,20 @@ export class Browser {
         });
     }
 
+    async scanForVideos(website_url) {
+        return new Promise(async resolve => {
+            const page = await this.browser.newPage();
+
+            await page.goto(website_url, this.noTimeout);
+
+            if (await this.check404(page)) resolve();
+
+            await this.autoScroll(page);
+
+            console.log(await page.$eval('.GX-Ppj', e => e.href));
+        });
+    }
+
     async fetchTitle(page) {
         return await page.$eval('._3JyyHX', t => t.innerHTML);
     }
@@ -159,13 +173,16 @@ export class Browser {
 
     async autoScroll(page) {
         return new Promise(async resolve => {
-            await page.evaluate(async () => {
-                setTimeout(() => {
-                    clearInterval(timer);
-                    resolve();
-                }, 30000);
+            setTimeout(() => {
+                clearInterval(timer);
+                resolve();
+            }, 30000);
 
-                const timer = setInterval(() => {
+            let timer = setInterval(() => {
+            }, 10000);
+
+            await page.evaluate(async () => {
+                timer = setInterval(() => {
                     window.scrollBy(0, 1000);
                 }, 1000);
             });
