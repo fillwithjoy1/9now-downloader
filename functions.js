@@ -137,6 +137,15 @@ export class Browser {
                 reject();
             });
 
+            // Check if page is a 404, and then abort
+            this.auto404 = setTimeout(async () => {
+                if (await this.check404(page)) {
+                    log("🚧 404 Page Not Found", "info");
+                    // FIXME: reject();
+                    reject();
+                }
+            })
+
             this.videoUrl = '';
             this.licenseUrl = '';
             this.imageUrl = '';
