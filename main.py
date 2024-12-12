@@ -94,6 +94,7 @@ def sanitize_file_string(input_filename: str) -> str:
     return return_character
 
 
+# FIXME: Should be stored inside the temp_name folder
 def download_thumbnail(input_url: str, output_image: str):
     image = requests.get(input_url).content
     with open(output_image + ".jpg", "wb") as writer:
