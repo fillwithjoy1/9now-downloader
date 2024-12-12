@@ -137,15 +137,6 @@ export class Browser {
                 reject();
             });
 
-            // Check if page is a 404, and then abort
-            this.auto404 = setTimeout(async () => {
-                if (await this.check404(page)) {
-                    log("🚧 404 Page Not Found", "info");
-                    // FIXME: reject();
-                    reject();
-                }
-            })
-
             this.videoUrl = '';
             this.licenseUrl = '';
             this.imageUrl = '';
@@ -187,9 +178,6 @@ export class Browser {
 
             await page.goto(website_url, this.noTimeout);
 
-            // FIXME: reject();
-            if (await this.check404(page)) reject();
-
             await this.autoScroll(page);
 
             resolve(page.$$eval('.GX-Ppj', a => {
@@ -202,7 +190,9 @@ export class Browser {
         return await page.$eval('._3JyyHX', t => t.innerHTML);
     }
 
+    // FIXME: This function is unreliable
     async check404(page) {
+        throw new Error("This function should not be used in it's current state");
         return (await page.title() === "Page not found");
     }
 
