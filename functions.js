@@ -50,6 +50,7 @@ export async function browser_mass_download(playlist_url, folder_output, length)
     process.exit(69);
 }
 
+// TODO: Privatise some functions, if possible
 export class Browser {
     // Launch the browser
     constructor() {
