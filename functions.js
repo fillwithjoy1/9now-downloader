@@ -52,16 +52,18 @@ export async function browser_mass_download(playlist_url, folder_output, length)
 export async function browser_scan_download(playlist_url, folder_output) {
     const browser = await Browser.create();
     await Lock.lock();
-    const scanned_links = browser.scanForVideos(playlist_url);
+    const scanned_links = await browser.scanForVideos(playlist_url);
     const download_links = [];
     log("🛰️ Scanned for links", "info");
     for (let i = 0; i <= scanned_links.length; i++) {
         download_links.push(await browser.downloadSingleVideo(scanned_links[i]));
-        log("🔗 Fetched all links", "info");
+        log("🔗 Fetched links", "info");
     }
     for (let i = 0; i < download_links.length; i++) {
         await python_download_video(download_links[i][0], download_links[i][1], folder_output, download_links[i][2], download_links[i][3]);
     }
+    await Lock.unlock();
+    process.exit(0);
 }
 
 // TODO: Privatise some functions, if possible
@@ -126,7 +128,7 @@ export class Browser {
             // Reload page if download task didn't finish after 60 seconds
             this.autoRestart = setTimeout(async () => {
                 log("♻️ Reloading page", "info");
-                await page.reload();
+                await page.reload(this.noTimeout);
             }, 60000);
 
             // If the download task didn't finish after 5 minutes, skip
@@ -135,7 +137,7 @@ export class Browser {
                 await page.close();
                 // FIXME: reject();
                 reject();
-            });
+            }, 300000);
 
             this.videoUrl = '';
             this.licenseUrl = '';
@@ -173,7 +175,7 @@ export class Browser {
     }
 
     async scanForVideos(website_url) {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async resolve => {
             const page = await this.browser.newPage();
 
             await page.goto(website_url, this.noTimeout);
@@ -183,6 +185,8 @@ export class Browser {
             resolve(page.$$eval('.GX-Ppj', a => {
                 return a.map(a => a.href);
             }));
+
+            await page.close();
         });
     }
 

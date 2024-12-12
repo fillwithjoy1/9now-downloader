@@ -1,4 +1,4 @@
-import {browser_mass_download} from "./functions";
+import {browser_mass_download, browser_scan_download} from "./functions";
 import * as fs from "node:fs";
 
 // Define job types in TS
