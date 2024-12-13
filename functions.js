@@ -32,7 +32,6 @@ function log(data, type) {
     }
 }
 
-// TODO: Add browser_scan function that will be used in jobs.ts
 export async function browser_mass_download(playlist_url, folder_output, length) {
     const browser = await Browser.create();
     const download_links = [];
