@@ -124,6 +124,8 @@ export class Browser {
             const page = await this.browser.newPage();
 
             await page.goto(website_url, this.noTimeout);
+            
+            const drmStatus = this.checkDRMStatus(page);
 
             // Reload page if download task didn't finish after 60 seconds
             this.autoRestart = setTimeout(async () => {
