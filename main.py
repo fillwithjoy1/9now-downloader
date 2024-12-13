@@ -22,6 +22,10 @@ def download_video_and_pssh(url: str, temp_name: str) -> str:
             return line
 
 
+def download_video_only(url: str, temp_name: str):
+    subprocess.run(f"./N_m3u8DL-RE.exe --auto-select --save-name {temp_name}_merged {url}")
+
+
 def read_pssh(path: str) -> str:
     raw = Path(path).read_bytes()
     pssh_offset = raw.rfind(b'pssh')
@@ -101,15 +105,18 @@ def download_thumbnail(input_url: str, output_image: str):
         writer.write(image)
 
 
-def main(video_url: str, license_url: str, file_name: str, temp_name: str, image_url: str):
+def main(video_url: str, license_url: str, file_name: str, temp_name: str, image_url: str, is_drm: bool):
     download_thumbnail(image_url, temp_name)
     print("Downloaded thumbnail")
-    pssh_key = download_video_and_pssh(video_url, temp_name)
-    print("Successfully downloaded video and PSSH key")
-    keys = get_decryption_keys(pssh_key, license_url)
-    print("Got decryption keys")
-    decrypt_files(keys, temp_name)
-    print("Decrypted files")
+    if is_drm:
+        pssh_key = download_video_and_pssh(video_url, temp_name)
+        print("Successfully downloaded video and PSSH key")
+        keys = get_decryption_keys(pssh_key, license_url)
+        print("Got decryption keys")
+        decrypt_files(keys, temp_name)
+        print("Decrypted files")
+    else:
+        download_video_only(video_url, temp_name)
     merge_files(file_name, temp_name)
     print("Merged files")
     cleanup(temp_name)
@@ -133,7 +140,7 @@ if __name__ == "__main__":
         image_url = args.image_url
     else:
         video_url = input("Enter video URL: ")
-        license_url = input("Enter license URL: ")
+        license_url = input("Enter license URL: (type 0 if there's no license)")
         file_name = input("Enter file name: ")
         image_url = input("Enter image URL: ")
 
@@ -143,4 +150,4 @@ if __name__ == "__main__":
 
     # This ensures that only one download goes at a time
     with lock:
-        main(video_url, license_url, file_name, str(rng_temp_name), image_url)
+        main(video_url, license_url, file_name, str(rng_temp_name), image_url, (license_url == 0))
