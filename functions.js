@@ -126,7 +126,7 @@ export class Browser {
             await page.goto(website_url, this.noTimeout);
 
             await page.waitForSelector('video', this.noTimeout);
-            const drmStatus = this.checkDRMStatus(page);
+            const drmStatus = await this.checkDRMStatus(page);
             log(drmStatus, "debug");
 
             // Reload page if download task didn't finish after 60 seconds
@@ -147,7 +147,7 @@ export class Browser {
             this.licenseUrl = '';
             this.imageUrl = '';
 
-            this.listenForLinks = async request => {
+            this.listenForDRMLinks = async request => {
                 if (request.url().includes("manifest.mpd") && this.videoUrl === '' && !request.url().includes("brightcove")) {
                     this.videoUrl = request.url();
                     log("Fetch video", "debug");
@@ -165,7 +165,7 @@ export class Browser {
                     log(this.imageUrl, "debug");
                 }
 
-                if (this.videoUrl.length > 0 && this.licenseUrl.length > 0 && this.fetchTitle.length > 0 && drmStatus) {
+                if (this.videoUrl.length > 0 && this.licenseUrl.length > 0 && this.fetchTitle.length > 0) {
                     clearTimeout(this.autoRestart);
                     clearTimeout(this.autoSkip);
                     const title = await this.fetchTitle(page);
@@ -174,7 +174,32 @@ export class Browser {
                 }
             }
 
-            page.on("request", request => this.listenForLinks(request));
+            this.listenForLinks = async request => {
+                if (request.url().includes("image.jpg")) {
+                    this.imageUrl = request.url();
+                    log("Fetch image", "debug");
+                    log(this.imageUrl, "debug");
+                }
+
+                if (request.url().includes("master.m3u8") && !request.url().includes("brightcove")) {
+                    this.videoUrl = request.url();
+                    log("Fetch video", "debug");
+                    log(request.url(), "debug");
+                }
+
+                if (this.videoUrl.length > 0 && this.fetchTitle.length > 0) {
+                    clearTimeout(this.autoRestart);
+                    clearTimeout(this.autoSkip);
+                    const title = await this.fetchTitle(page);
+                    await page.close();
+                    resolve([this.videoUrl, 0, title, this.imageUrl]);
+                }
+            }
+
+            page.on("request", request => {
+                if (drmStatus) this.listenForDRMLinks(request);
+                else this.listenForLinks(request);
+            });
         });
     }
 
