@@ -200,6 +200,17 @@ export class Browser {
         return (await page.title() === "Page not found");
     }
 
+    async checkDRMStatus(page) {
+        const videoElement = await page.$eval('video', e => {
+            return e.getAttribute('data-param-video-asset');
+        });
+        if (videoElement) {
+            return JSON.parse(videoElement)["video"]["drm"]
+        } else {
+            throw new Error("Failed to fetch video element")
+        }
+    }
+
     async autoScroll(page) {
         return new Promise(async resolve => {
             setTimeout(() => {
