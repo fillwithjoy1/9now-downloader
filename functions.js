@@ -117,7 +117,7 @@ export class Browser {
     }
 
     // Goes to specified link and returns the download video link and license URL required
-    // TODO: Handle non-DRM videos
+    // Returns 0 for the license_url, if it's a non-drm video
     async downloadSingleVideo(website_url) {
         return new Promise(async (resolve, reject) => {
 
