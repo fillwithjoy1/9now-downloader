@@ -127,6 +127,7 @@ export class Browser {
 
             await page.waitForSelector('video', this.noTimeout);
             const drmStatus = this.checkDRMStatus(page);
+            log(drmStatus, "debug");
 
             // Reload page if download task didn't finish after 60 seconds
             this.autoRestart = setTimeout(async () => {
