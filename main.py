@@ -23,7 +23,9 @@ def download_video_and_pssh(url: str, temp_name: str) -> str:
 
 
 def download_video_only(url: str, temp_name: str):
-    subprocess.run(f"./N_m3u8DL-RE.exe --auto-select --save-name {temp_name}_merged {url}")
+    subprocess.run(f"./N_m3u8DL-RE.exe --auto-select --save-name {temp_name}_mover {url}")
+    os.rename(f"{temp_name}_mover.mp4", f"{temp_name}_merge.mp4")
+    os.rename(f"{temp_name}_mover.en.m4a", f"{temp_name}_merge.m4a")
 
 
 def read_pssh(path: str) -> str:
