@@ -165,7 +165,7 @@ export class Browser {
                     log(this.imageUrl, "debug");
                 }
 
-                if (this.videoUrl.length > 0 && this.licenseUrl.length > 0 && this.fetchTitle.length > 0) {
+                if (this.videoUrl.length > 0 && this.licenseUrl.length > 0 && this.fetchTitle.length > 0 && this.imageUrl.length > 0) {
                     clearTimeout(this.autoRestart);
                     clearTimeout(this.autoSkip);
                     const title = await this.fetchTitle(page);
