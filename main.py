@@ -79,7 +79,7 @@ def merge_files(file_name: str, temp_name: str):
 
 def cleanup(temp_name: str):
     remove = [f"{temp_name}.mp4", f"{temp_name}.en.m4a", f"{temp_name}_merge.mp4", f"{temp_name}_merge.m4a",
-              f"{temp_name}_final.mp4", f"{temp_name}.jpg"]
+              f"{temp_name}_final.mp4", f"{temp_name}_out.mp4", f"{temp_name}.jpg"]
     for file in remove:
         try:
             os.remove(file)
