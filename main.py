@@ -73,6 +73,8 @@ def merge_files(file_name: str, temp_name: str):
     except FileNotFoundError:
         os.mkdir(output)
         os.rename(f"{temp_name}_out.mp4", f"{output}/{sanitize_file_string(file_name)}.mp4")
+    except FileExistsError:
+        pass
 
 
 def cleanup(temp_name: str):
