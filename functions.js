@@ -147,6 +147,8 @@ export class Browser {
             this.videoUrl = '';
             this.licenseUrl = '';
             this.imageUrl = '';
+            // TODO: This doesn't account for the title being completely empty
+            this.title = await this.fetchTitle(page);
 
             this.listenForDRMLinks = async request => {
                 if (request.url().includes("manifest.mpd") && this.videoUrl === '' && !request.url().includes("brightcove")) {
@@ -166,12 +168,11 @@ export class Browser {
                     log(this.imageUrl, "debug");
                 }
 
-                if (this.videoUrl.length > 0 && this.licenseUrl.length > 0 && this.fetchTitle.length > 0 && this.imageUrl.length > 0) {
+                if (this.videoUrl.length > 0 && this.licenseUrl.length > 0 && this.title.length > 0 && this.imageUrl.length > 0) {
                     clearTimeout(this.autoRestart);
                     clearTimeout(this.autoSkip);
-                    const title = await this.fetchTitle(page);
                     await page.close();
-                    resolve([this.videoUrl, this.licenseUrl, title, this.imageUrl]);
+                    resolve([this.videoUrl, this.licenseUrl, this.title, this.imageUrl]);
                 }
             }
 
@@ -188,12 +189,12 @@ export class Browser {
                     log(request.url(), "debug");
                 }
 
-                if (this.videoUrl.length > 0 && this.fetchTitle.length > 0 && this.imageUrl.length > 0) {
+                if (this.videoUrl.length > 0 && this.title.length > 0 && this.imageUrl.length > 0) {
                     clearTimeout(this.autoRestart);
                     clearTimeout(this.autoSkip);
                     const title = await this.fetchTitle(page);
                     await page.close();
-                    resolve([this.videoUrl, 0, title, this.imageUrl]);
+                    resolve([this.videoUrl, 0, this.title, this.imageUrl]);
                 }
             }
 
