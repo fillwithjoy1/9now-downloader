@@ -12,4 +12,4 @@ test("404 Page Check", async () => {
     console.log(await browser.check404(page));
 
     expect(await browser.check404(page)).toBeTruthy();
-}, 300000);
+}, 30000);
