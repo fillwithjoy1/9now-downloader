@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 cd ..
-touch password
+printf "[replace with email]\n[replace with password]" > password
