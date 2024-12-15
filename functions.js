@@ -156,6 +156,7 @@ export class Browser {
                     log("Fetch video", "debug");
                     log(request.url(), "debug");
                 }
+
                 if (request.url().includes("license", "debug")) {
                     this.licenseUrl = request.url();
                     log("Fetch License", "debug");
