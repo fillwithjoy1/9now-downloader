@@ -1,7 +1,7 @@
 import {Browser} from "./functions.js";
 import {expect, test} from "vitest";
 
-
+// TODO: Add cohesive testing before reworking the files
 test("404 Page Check", async () => {
     const browser = await Browser.create();
 
