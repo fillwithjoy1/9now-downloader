@@ -168,13 +168,6 @@ export class Browser {
                     log("Fetch image", "debug");
                     log(this.imageUrl, "debug");
                 }
-
-                if (this.videoUrl.length > 0 && this.licenseUrl.length > 0 && this.title.length > 0 && this.imageUrl.length > 0) {
-                    clearTimeout(this.autoRestart);
-                    clearTimeout(this.autoSkip);
-                    await page.close();
-                    resolve([this.videoUrl, this.licenseUrl, this.title, this.imageUrl]);
-                }
             }
 
             this.listenForLinks = async request => {
@@ -189,13 +182,23 @@ export class Browser {
                     log("Fetch video", "debug");
                     log(request.url(), "debug");
                 }
+            }
 
-                if (this.videoUrl.length > 0 && this.title.length > 0 && this.imageUrl.length > 0) {
-                    clearTimeout(this.autoRestart);
-                    clearTimeout(this.autoSkip);
-                    const title = await this.fetchTitle(page);
-                    await page.close();
-                    resolve([this.videoUrl, 0, this.title, this.imageUrl]);
+            let exitFunction = async () => {
+                if (drmStatus) {
+                    if (this.videoUrl.length > 0 && this.licenseUrl.length > 0 && this.imageUrl.length > 0) {
+                        clearTimeout(this.autoRestart);
+                        clearTimeout(this.autoSkip);
+                        await page.close();
+                        resolve([this.videoUrl, this.licenseUrl, this.title, this.imageUrl]);
+                    }
+                } else {
+                    if (this.videoUrl.length > 0 && this.imageUrl.length > 0) {
+                        clearTimeout(this.autoRestart);
+                        clearTimeout(this.autoSkip);
+                        await page.close();
+                        resolve([this.videoUrl, 0, this.title, this.imageUrl]);
+                    }
                 }
             }
 
