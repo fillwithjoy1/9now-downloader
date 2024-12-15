@@ -155,18 +155,21 @@ export class Browser {
                     this.videoUrl = request.url();
                     log("Fetch video", "debug");
                     log(request.url(), "debug");
+                    await exitFunction();
                 }
 
                 if (request.url().includes("license", "debug")) {
                     this.licenseUrl = request.url();
                     log("Fetch License", "debug");
                     log(this.licenseUrl, "debug");
+                    await exitFunction();
                 }
 
                 if (request.url().includes("image.jpg")) {
                     this.imageUrl = request.url();
                     log("Fetch image", "debug");
                     log(this.imageUrl, "debug");
+                    await exitFunction();
                 }
             }
 
@@ -175,12 +178,14 @@ export class Browser {
                     this.imageUrl = request.url();
                     log("Fetch image", "debug");
                     log(this.imageUrl, "debug");
+                    await exitFunction();
                 }
 
                 if (request.url().includes("master.m3u8") && !request.url().includes("brightcove")) {
                     this.videoUrl = request.url();
                     log("Fetch video", "debug");
                     log(request.url(), "debug");
+                    await exitFunction();
                 }
             }
 
@@ -189,6 +194,7 @@ export class Browser {
                     if (this.videoUrl.length > 0 && this.licenseUrl.length > 0 && this.imageUrl.length > 0) {
                         clearTimeout(this.autoRestart);
                         clearTimeout(this.autoSkip);
+                        page.off("request", request => this.listenForDRMLinks(request));
                         await page.close();
                         resolve([this.videoUrl, this.licenseUrl, this.title, this.imageUrl]);
                     }
@@ -196,6 +202,7 @@ export class Browser {
                     if (this.videoUrl.length > 0 && this.imageUrl.length > 0) {
                         clearTimeout(this.autoRestart);
                         clearTimeout(this.autoSkip);
+                        page.off("request", request => this.listenForLinks(request));
                         await page.close();
                         resolve([this.videoUrl, 0, this.title, this.imageUrl]);
                     }
