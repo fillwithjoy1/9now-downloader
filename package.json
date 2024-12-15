@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "fs-ext": "^2.0.0",
-    "puppeteer": "^23.1.0"
+    "puppeteer": "^23.1.0",
+    "vitest": "^2.1.8"
   }
 }

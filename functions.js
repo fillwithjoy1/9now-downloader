@@ -238,7 +238,6 @@ export class Browser {
 
     // FIXME: This function is unreliable
     async check404(page) {
-        throw new Error("This function should not be used in it's current state");
         return (await page.title() === "Page not found");
     }
 
