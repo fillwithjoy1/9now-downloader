@@ -1,4 +1,4 @@
-import {Browser, Lock} from "./functions.js";
+import {Browser, Lock, sleep} from "./functions.js";
 import {expect, test} from "vitest";
 import * as fs from "node:fs/promises";
 import {existsSync} from "node:fs"
@@ -33,4 +33,14 @@ test("Remove a lock", async () => {
 test("Check Lock.status()", async () => {
     if (!existsSync("node.lock")) await Lock.lock();
     expect(Lock.status()).toBeTruthy();
+});
+
+
+// Check sleep function
+test("Sleep function check", async () => {
+    const now = performance.now();
+    await sleep(5000);
+    const now2 = performance.now();
+    console.log(`Performance: ${now2 - now - 5000}`);
+    expect(now2 - now > 5000).toBeTruthy();
 });
