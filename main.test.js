@@ -39,8 +39,8 @@ test("Check Lock.status()", async () => {
 // Check sleep function
 test("Sleep function check", async () => {
     const now = performance.now();
-    await sleep(5000);
+    await sleep(3000);
     const now2 = performance.now();
-    console.log(`Performance: ${now2 - now - 5000}`);
-    expect(now2 - now > 5000).toBeTruthy();
+    console.log(`Performance: ${now2 - now - 3000}`);
+    expect(now2 - now > 3000).toBeTruthy();
 });
