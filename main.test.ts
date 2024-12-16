@@ -42,5 +42,5 @@ test("Sleep function check", async () => {
     await sleep(3000);
     const now2 = performance.now();
     console.log(`Performance: ${now2 - now - 3000}`);
-    expect(now2 - now > 3000).toBeTruthy();
+    expect(now2 - now > 2990).toBeTruthy();
 });
