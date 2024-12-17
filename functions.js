@@ -276,7 +276,7 @@ export class Browser {
     }
 
     async safelyWait(page) {
-        while (page.detached) {
+        while (page.mainFrame().detached) {
             await sleep(100);
         }
     }
