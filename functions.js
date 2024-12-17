@@ -141,7 +141,7 @@ export class Browser {
                 log("🕒 Timed out, skipping", "info");
                 await page.close();
                 // FIXME: reject();
-                reject();
+                resolve([0, 0, 0, 0]);
             }, 300000);
 
             this.videoUrl = '';
