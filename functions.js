@@ -85,13 +85,11 @@ export class Browser {
     // This function should never be called at all as it's already called using constructor
     async launch() {
         this.browser = await puppeteer.launch({
-            browser: 'firefox',
+            channel: 'chrome',
             headless: false,
-            timeout: 0,
-            extraPrefsFirefox: {
-                'media.gmp-manager.updateEnabled': true,
-                'media.eme.enabled': true
-            },
+            ignoreDefaultArgs: [
+                '--disable-component-update'
+            ]
         });
         this.page = await this.browser.newPage();
         await this.login();
