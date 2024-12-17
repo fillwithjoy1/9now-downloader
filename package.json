@@ -6,7 +6,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "python -m unittest && vitest run"
+    "test": "python -m unittest && vitest run",
+    "install": "npx puppeteer browsers install firefox"
   },
   "dependencies": {
     "fs-ext": "^2.0.0",
