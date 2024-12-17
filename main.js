@@ -66,6 +66,14 @@ async function download_video(path) {
             await rl.close();
             await browser_mass_download(url_3, folder_3, length_3);
             break;
+        case 4:
+            const url_4 = await rl.question(`Video URL`);
+            await rl.close();
+            const browser = await Browser.create();
+            await Lock.lock();
+            const data_4 = browser.downloadSingleVideo(url_4);
+            await python_download_video(data_4[0], data_4[1], 'output', data_4[2], data_4[3]);
+            break;
         default:
             console.log('Invalid choice. Exiting');
             process.exit(2);
