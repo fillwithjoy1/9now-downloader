@@ -66,7 +66,7 @@ export async function browser_scan_download(playlist_url, folder_output) {
 }
 
 // TODO: Privatise some functions, if possible
-// TODO: await page.close() doesn't do anything
+// TODO: await page.close() doesn't do anything - this is a Firefox issue
 export class Browser {
     // Launch the browser
     constructor() {
