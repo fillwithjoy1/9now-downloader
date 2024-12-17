@@ -132,7 +132,7 @@ export class Browser {
             log(drmStatus, "debug");
 
             // Reload page if download task didn't finish after 60 seconds
-            this.autoRestart = setTimeout(async () => {
+            this.autoRestart = setInterval(async () => {
                 log("♻️ Reloading page", "info");
                 await page.reload(this.noTimeout);
             }, 60000);
@@ -143,7 +143,7 @@ export class Browser {
                 await page.close();
                 // FIXME: reject();
                 resolve([0, 0, 0, 0]);
-            }, 300000);
+            }, 290000);
 
             this.videoUrl = '';
             this.licenseUrl = '';
