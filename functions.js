@@ -90,6 +90,7 @@ export class Browser {
             timeout: 0,
             extraPrefsFirefox: {
                 'media.gmp-manager.updateEnabled': true,
+                'media.eme.enabled': true
             },
         });
         this.page = await this.browser.newPage();
