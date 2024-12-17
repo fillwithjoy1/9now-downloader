@@ -138,6 +138,7 @@ export class Browser {
             // If the download task didn't finish after 5 minutes, skip
             this.autoSkip = setTimeout(async () => {
                 log("🕒 Timed out, skipping", "info");
+                await this.safelyWait(page);
                 await page.close();
                 // FIXME: reject();
                 resolve([0, 0, 0, 0]);
@@ -194,6 +195,7 @@ export class Browser {
                         clearInterval(this.autoRestart);
                         clearTimeout(this.autoSkip);
                         page.off("request", request => this.listenForDRMLinks(request));
+                        await this.safelyWait(page);
                         await page.close();
                         resolve([this.videoUrl, this.licenseUrl, this.title, this.imageUrl]);
                     }
@@ -202,6 +204,7 @@ export class Browser {
                         clearTimeout(this.autoRestart);
                         clearTimeout(this.autoSkip);
                         page.off("request", request => this.listenForLinks(request));
+                        await this.safelyWait(page);
                         await page.close();
                         resolve([this.videoUrl, 0, this.title, this.imageUrl]);
                     }
@@ -227,6 +230,7 @@ export class Browser {
                 return a.map(a => a.href);
             }));
 
+            await this.safelyWait(page);
             await page.close();
         });
     }
