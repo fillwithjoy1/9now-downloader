@@ -193,7 +193,7 @@ export class Browser {
             let exitFunction = async () => {
                 if (drmStatus) {
                     if (this.videoUrl.length > 0 && this.licenseUrl.length > 0 && this.imageUrl.length > 0) {
-                        clearTimeout(this.autoRestart);
+                        clearInterval(this.autoRestart);
                         clearTimeout(this.autoSkip);
                         page.off("request", request => this.listenForDRMLinks(request));
                         await page.close();
