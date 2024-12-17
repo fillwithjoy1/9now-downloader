@@ -271,6 +271,11 @@ export class Browser {
         });
     }
 
+    async safelyWait(page) {
+        while (page.detached) {
+            await sleep(100);
+        }
+    }
 }
 
 export function python_download_video(video_link, license_url, folder_output = "output", file_name, image_url) {
