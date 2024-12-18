@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "test": "python -m unittest && vitest run",
-    "install": "npx puppeteer browsers install firefox"
+    "install": "npx puppeteer browsers install firefox && npx puppeteer browsers install chrome"
   },
   "dependencies": {
     "@types/node": "^22.10.2",
