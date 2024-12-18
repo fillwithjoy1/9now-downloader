@@ -10,8 +10,9 @@
     "install": "npx puppeteer browsers install firefox"
   },
   "dependencies": {
+    "@types/node": "^22.10.2",
     "fs-ext": "^2.0.0",
-    "puppeteer": "^23.1.0",
+    "puppeteer": "^23.11.0",
     "vitest": "^2.1.8"
   }
 }
