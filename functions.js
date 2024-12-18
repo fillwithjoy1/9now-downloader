@@ -21,7 +21,7 @@ if (fs.existsSync("password")) {
 // Internal function that enables logging to console if enabled
 function log(data, type) {
     // Values allowed are "debug", "info" or "none"
-    const logging = "debug";
+    const logging = "info";
     switch (type) {
         case "debug":
             if (logging === "debug") console.log(data);
