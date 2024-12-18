@@ -21,7 +21,7 @@ if (fs.existsSync("password")) {
 // Internal function that enables logging to console if enabled
 function log(data, type) {
     // Values allowed are "debug", "info" or "none"
-    const logging = "info";
+    const logging = "debug";
     switch (type) {
         case "debug":
             if (logging === "debug") console.log(data);
@@ -155,21 +155,21 @@ export class Browser {
                     this.videoUrl = request.url();
                     log("Fetch video", "debug");
                     log(request.url(), "debug");
-                    await exitFunction();
+                    await exitFunction(page);
                 }
 
                 if (request.url().includes("license", "debug")) {
                     this.licenseUrl = request.url();
                     log("Fetch License", "debug");
                     log(this.licenseUrl, "debug");
-                    await exitFunction();
+                    await exitFunction(page);
                 }
 
                 if (request.url().includes("image.jpg")) {
                     this.imageUrl = request.url();
                     log("Fetch image", "debug");
                     log(this.imageUrl, "debug");
-                    await exitFunction();
+                    await exitFunction(page);
                 }
             }
 
@@ -178,18 +178,18 @@ export class Browser {
                     this.imageUrl = request.url();
                     log("Fetch image", "debug");
                     log(this.imageUrl, "debug");
-                    await exitFunction();
+                    await exitFunction(page);
                 }
 
                 if (request.url().includes("master.m3u8") && !request.url().includes("brightcove")) {
                     this.videoUrl = request.url();
                     log("Fetch video", "debug");
                     log(request.url(), "debug");
-                    await exitFunction();
+                    await exitFunction(page);
                 }
             }
 
-            let exitFunction = async () => {
+            let exitFunction = async page => {
                 if (drmStatus) {
                     if (this.videoUrl.length > 0 && this.licenseUrl.length > 0 && this.imageUrl.length > 0) {
                         clearInterval(this.autoRestart);
