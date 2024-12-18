@@ -23,6 +23,7 @@ def download_video_and_pssh(url: str, temp_name: str) -> str:
             return line
 
 
+# TODO: Fix sanitizing issues
 def download_video_only(url: str, temp_name: str):
     subprocess.run(f"./N_m3u8DL-RE.exe --auto-select --save-name {temp_name}_mover {url}")
     os.rename(f"{temp_name}_mover.mp4", f"{temp_name}_merge.mp4")
