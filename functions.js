@@ -209,6 +209,7 @@ export class Browser {
                         resolve([this.videoUrl, 0, this.title, this.imageUrl]);
                     }
                 }
+                await this.close();
             }
 
             page.on("request", request => {
@@ -279,8 +280,9 @@ export class Browser {
         }
     }
 
-    async exit() {
-
+    async close() {
+        await this.browser.disconnect();
+        await this.browser.close();
     }
 }
 
