@@ -4,6 +4,7 @@ import * as fs from "node:fs/promises";
 import {existsSync} from "node:fs"
 
 // TODO: Add cohesive testing before reworking the files
+// TODO: Add a valid page to check 404 detection works
 test("404 Page Check", async () => {
     const browser = await Browser.create();
 
