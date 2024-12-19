@@ -66,7 +66,7 @@ export async function browser_scan_download(playlist_url, folder_output) {
 }
 
 // TODO: Privatise some functions, if possible
-// TODO: await page.close() doesn't do anything
+// TODO: await page.close() doesn't do anything - this is a Firefox issue
 export class Browser {
     // Launch the browser
     constructor() {
@@ -85,13 +85,11 @@ export class Browser {
     // This function should never be called at all as it's already called using constructor
     async launch() {
         this.browser = await puppeteer.launch({
-            browser: 'firefox',
+            channel: 'chrome',
             headless: false,
-            timeout: 0,
-            extraPrefsFirefox: {
-                'media.gmp-manager.updateEnabled': true,
-                'media.eme.enabled': true
-            },
+            ignoreDefaultArgs: [
+                '--disable-component-update'
+            ]
         });
         this.page = await this.browser.newPage();
         await this.login();
@@ -153,7 +151,7 @@ export class Browser {
             this.title = await this.fetchTitle(page);
 
             this.listenForDRMLinks = async request => {
-                if (request.url().includes("manifest.mpd") && this.videoUrl === '' && !request.url().includes("brightcove")) {
+                if (request.url().includes("manifest.mpd") && this.videoUrl === '' && !request.url().includes("brightcove") && !request.url().includes("infinity")) {
                     this.videoUrl = request.url();
                     log("Fetch video", "debug");
                     log(request.url(), "debug");
@@ -211,6 +209,7 @@ export class Browser {
                         resolve([this.videoUrl, 0, this.title, this.imageUrl]);
                     }
                 }
+                await this.close();
             }
 
             page.on("request", request => {
@@ -279,6 +278,11 @@ export class Browser {
         while (page.mainFrame().detached) {
             await sleep(100);
         }
+    }
+
+    async close() {
+        await this.browser.disconnect();
+        await this.browser.close();
     }
 }
 
