@@ -83,7 +83,7 @@ export class Browser {
     }
 
     // This function should never be called at all as it's already called using constructor
-async launch() {
+    async launch() {
         this.browser = await puppeteer.launch({
             browser: 'firefox',
             headless: false,
