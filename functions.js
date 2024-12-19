@@ -151,7 +151,7 @@ export class Browser {
             this.title = await this.fetchTitle(page);
 
             this.listenForDRMLinks = async request => {
-                if (request.url().includes("manifest.mpd") && this.videoUrl === '' && !request.url().includes("brightcove")) {
+                if (request.url().includes("manifest.mpd") && this.videoUrl === '' && !request.url().includes("brightcove") && !request.url().includes("infinity")) {
                     this.videoUrl = request.url();
                     log("Fetch video", "debug");
                     log(request.url(), "debug");
@@ -277,6 +277,10 @@ export class Browser {
         while (page.mainFrame().detached) {
             await sleep(100);
         }
+    }
+
+    async exit() {
+
     }
 }
 
