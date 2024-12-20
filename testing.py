@@ -23,3 +23,6 @@ class CheckIllegalCharacters(unittest.TestCase):
 
     def test_two(self):
         self.assertEqual(main.sanitize_file_string("Test -> Next"), "Test -- Next")
+
+if __name__ == "__main__":
+    unittest.main()
