@@ -1,11 +1,11 @@
-name: Run tests
+name: Run python tests
 
 on:
   push:
   pull_request:
 
 jobs:
-  run_tests:
+  Run Python Tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -13,6 +13,5 @@ jobs:
 
       - name: Run tests
         run: |
-          npm install
           pip install -r requirements.txt
-          npm test
+          python testing.py 
