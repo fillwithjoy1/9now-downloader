@@ -281,8 +281,9 @@ export class Browser {
     }
 
     async close() {
-        await this.browser.disconnect();
-        await this.browser.close();
+        // FIXME: Disabled these functions for the time being
+        // await this.browser.disconnect();
+        // await this.browser.close();
     }
 }
 
