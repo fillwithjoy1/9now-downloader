@@ -3,7 +3,7 @@ import * as fs from "node:fs";
 
 // High-Performance mode requires significant amounts of RAM, CPU and Network
 // Instead of running one job at a time, all jobs are dispatched
-const high_performance: Boolean = false;
+const high_performance: boolean = false;
 // Controls how many tasks are sent
 const hp_tasks = 3;
 
@@ -53,9 +53,9 @@ async function dispatch_job(job: Job): Promise<void> {
         }
         console.log(`⚒️ Starting job ${job.name}`);
         if (!job.scan) {
-            await browser_mass_download(job.link, job.folder_name, job.length);
+            await browser_mass_download(job.link, job.folder_name, job.length, high_performance);
         } else if (job.scan === true) {
-            await browser_scan_download(job.link, job.folder_name);
+            await browser_scan_download(job.link, job.folder_name, high_performance);
         }
         console.log(`✅ Finished job successfully: ${job.name}`);
         resolve();
