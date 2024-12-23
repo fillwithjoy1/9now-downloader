@@ -123,6 +123,7 @@ export class Browser {
 
             const page = await this.browser.newPage();
 
+            await this.safelyWait(page);
             await page.goto(website_url, this.noTimeout);
 
             await page.waitForSelector('video', this.noTimeout);
