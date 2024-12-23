@@ -26,21 +26,16 @@ async function main(): Promise<void> {
         const data = fs.readFileSync("jobs.json").toString();
         const jobs: JobSchema = JSON.parse(data);
         console.log(`💡 Found ${jobs.jobs.length} jobs to do`);
-        for (let i = 0; i < jobs.jobs.length; i++) {
-            if (jobs.jobs[i].skip === true) {
-                console.log(`🦘 Skipping job ${jobs.jobs[i].name}`)
-                continue;
+        if (high_performance) {
+            console.log(`⏲️ High Performance Mode is on!`);
+            const allTheJobs = jobs.jobs.map(individualJob => dispatch_job(individualJob));
+
+            await Promise.all(allTheJobs).then().catch(console.error);
+        } else {
+            for (let i = 0; i < jobs.jobs.length; i++) {
+                await dispatch_job(jobs.jobs[i]);
             }
-            console.log(`⚒️ Starting job ${jobs.jobs[i].name}`);
-            if (!jobs.jobs[i].scan) {
-                await browser_mass_download(jobs.jobs[i].link, jobs.jobs[i].folder_name, jobs.jobs[i].length);
-            } else if (jobs.jobs[i].scan === true) {
-                await browser_scan_download(jobs.jobs[i].link, jobs.jobs[i].folder_name);
-            }
-            console.log(`✅ Finished job successfully, ${i + 1}/${jobs.jobs.length}`)
         }
-
-
     } else {
         console.log("There is no jobs.json created");
         console.log("Create a jobs.json file to run a download job as needed");
