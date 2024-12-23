@@ -4,6 +4,8 @@ import * as fs from "node:fs";
 // High-Performance mode requires significant amounts of RAM, CPU and Network
 // Instead of running one job at a time, all jobs are dispatched
 const high_performance: Boolean = false;
+// Controls how many tasks are sent
+const hp_tasks = 3;
 
 // Define job types in TS
 interface Job {

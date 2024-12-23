@@ -32,10 +32,10 @@ function log(data, type) {
     }
 }
 
-export async function browser_mass_download(playlist_url, folder_output, length) {
+export async function browser_mass_download(playlist_url, folder_output, length, high_performance = false) {
     const browser = await Browser.create();
     const download_links = [];
-    await Lock.lock();
+    if (!high_performance) await Lock.lock();
     for (let i = 1; i <= length; i++) {
         download_links.push(await browser.downloadSingleVideo(`${playlist_url}/episode-${i}`));
         log("🔗 Fetched links", "info");
@@ -44,13 +44,13 @@ export async function browser_mass_download(playlist_url, folder_output, length)
     for (let i = 0; i < download_links.length; i++) {
         await python_download_video(download_links[i][0], download_links[i][1], folder_output, `Ep ${i + 1} - ${download_links[i][2]}`, download_links[i][3]);
     }
-    await Lock.unlock();
+    if (!high_performance) await Lock.unlock();
     process.exit(0);
 }
 
-export async function browser_scan_download(playlist_url, folder_output) {
+export async function browser_scan_download(playlist_url, folder_output, high_performance = false) {
     const browser = await Browser.create();
-    await Lock.lock();
+    if (!high_performance) await Lock.lock();
     const scanned_links = await browser.scanForVideos(playlist_url);
     const download_links = [];
     log("🛰️ Scanned for links", "info");
@@ -61,7 +61,7 @@ export async function browser_scan_download(playlist_url, folder_output) {
     for (let i = 0; i < download_links.length; i++) {
         await python_download_video(download_links[i][0], download_links[i][1], folder_output, download_links[i][2], download_links[i][3]);
     }
-    await Lock.unlock();
+    if (!high_performance) await Lock.unlock();
     process.exit(0);
 }
 
