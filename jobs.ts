@@ -1,4 +1,4 @@
-import {browser_mass_download, browser_scan_download} from "./functions";
+import {browser_mass_download, browser_scan_download, Lock} from "./functions";
 import * as fs from "node:fs";
 
 // High-Performance mode requires significant amounts of RAM, CPU and Network
@@ -30,9 +30,11 @@ async function main(): Promise<void> {
         console.log(`💡 Found ${jobs.jobs.length} jobs to do`);
         if (high_performance) {
             console.log(`⏲️ High Performance Mode is on!`);
+            await Lock.lock();
             const allTheJobs = jobs.jobs.map(individualJob => dispatch_job(individualJob));
 
             await Promise.all(allTheJobs).then().catch(console.error);
+            Lock.unlock();
         } else {
             for (let i = 0; i < jobs.jobs.length; i++) {
                 await dispatch_job(jobs.jobs[i]);
