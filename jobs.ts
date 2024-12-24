@@ -50,14 +50,15 @@ async function dispatch_job(job: Job): Promise<void> {
     return new Promise(async resolve => {
         if (job.skip === true) {
             console.log(`🦘 Skipping job ${job.name}`);
+        } else {
+            console.log(`⚒️ Starting job ${job.name}`);
+            if (!job.scan) {
+                await browser_mass_download(job.link, job.folder_name, job.length, high_performance);
+            } else if (job.scan === true) {
+                await browser_scan_download(job.link, job.folder_name, high_performance);
+            }
+            console.log(`✅ Finished job successfully: ${job.name}`);
         }
-        console.log(`⚒️ Starting job ${job.name}`);
-        if (!job.scan) {
-            await browser_mass_download(job.link, job.folder_name, job.length, high_performance);
-        } else if (job.scan === true) {
-            await browser_scan_download(job.link, job.folder_name, high_performance);
-        }
-        console.log(`✅ Finished job successfully: ${job.name}`);
         resolve();
     });
 }
