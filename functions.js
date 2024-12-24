@@ -40,6 +40,7 @@ export async function browser_mass_download(playlist_url, folder_output, length,
         download_links.push(await browser.downloadSingleVideo(`${playlist_url}/episode-${i}`));
         log("🔗 Fetched links", "info");
     }
+    browser.close();
     log("⬇️ Starting download", "info");
     for (let i = 0; i < download_links.length; i++) {
         await python_download_video(download_links[i][0], download_links[i][1], folder_output, `Ep ${i + 1} - ${download_links[i][2]}`, download_links[i][3]);
@@ -208,7 +209,6 @@ export class Browser {
                         resolve([this.videoUrl, 0, this.title, this.imageUrl]);
                     }
                 }
-                await this.close();
             }
 
             page.on("request", request => {
