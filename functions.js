@@ -45,7 +45,6 @@ export async function browser_mass_download(playlist_url, folder_output, length,
         await python_download_video(download_links[i][0], download_links[i][1], folder_output, `Ep ${i + 1} - ${download_links[i][2]}`, download_links[i][3]);
     }
     if (!high_performance) await Lock.unlock();
-    process.exit(0);
 }
 
 export async function browser_scan_download(playlist_url, folder_output, high_performance = false) {
@@ -62,7 +61,6 @@ export async function browser_scan_download(playlist_url, folder_output, high_pe
         await python_download_video(download_links[i][0], download_links[i][1], folder_output, download_links[i][2], download_links[i][3]);
     }
     if (!high_performance) await Lock.unlock();
-    process.exit(0);
 }
 
 // TODO: Privatise some functions, if possible
