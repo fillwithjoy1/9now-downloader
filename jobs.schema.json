@@ -45,6 +45,6 @@
       }
     }
   },
-  "required": [],
+  "required": ["jobs"],
   "additionalProperties": false
 }
