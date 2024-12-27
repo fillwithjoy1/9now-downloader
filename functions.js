@@ -132,6 +132,7 @@ export class Browser {
             // Reload page if download task didn't finish after 60 seconds
             this.autoRestart = setInterval(async () => {
                 log("♻️ Reloading page", "info");
+                await this.safelyWait(page);
                 await page.reload(this.noTimeout);
             }, 60000);
 
