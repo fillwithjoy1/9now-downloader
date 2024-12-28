@@ -56,6 +56,7 @@ async function dispatch_job(job: Job): Promise<void> {
             console.log(`⚒️ Starting job ${job.name}`);
             if (!job.scan) {
                 await browser_mass_download(job.link, job.folder_name, job.length, high_performance);
+                if (include_clips) console.log("✂️ Downloading clips");
                 if (include_clips) await browser_scan_download(`${job.link}/clips`, `${job.folder_name}_clips`, high_performance)
             } else if (job.scan === true) {
                 await browser_scan_download(job.link, job.folder_name, high_performance);
