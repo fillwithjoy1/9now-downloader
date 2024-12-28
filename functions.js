@@ -76,17 +76,17 @@ export class Browser {
         }
     }
 
-    static async create() {
+    static async create(headless = false) {
         const browserInstance = new this();
-        await browserInstance.launch();
+        await browserInstance.launch(headless);
         return browserInstance;
     }
 
     // This function should never be called at all as it's already called using constructor
-    async launch() {
+    async launch(headless = false) {
         this.browser = await puppeteer.launch({
             channel: 'chrome',
-            headless: false,
+            headless: headless,
             ignoreDefaultArgs: [
                 '--disable-component-update'
             ]
