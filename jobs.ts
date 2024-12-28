@@ -1,11 +1,13 @@
 import {browser_mass_download, browser_scan_download, Lock} from "./functions";
 import * as fs from "node:fs";
 
+// 🏳️ FLAGS
 // High-Performance mode requires significant amounts of RAM, CPU and Network
 // Instead of running one job at a time, all jobs are dispatched
 const high_performance: boolean = false;
 // Controls how many tasks are sent
 const hp_tasks = 3;
+const include_clips: boolean = true;
 
 // Define job types in TS
 interface Job {
@@ -54,6 +56,7 @@ async function dispatch_job(job: Job): Promise<void> {
             console.log(`⚒️ Starting job ${job.name}`);
             if (!job.scan) {
                 await browser_mass_download(job.link, job.folder_name, job.length, high_performance);
+                if (include_clips) await browser_scan_download(`${job.link}/clips`, `${job.folder_name}_clips`, high_performance)
             } else if (job.scan === true) {
                 await browser_scan_download(job.link, job.folder_name, high_performance);
             }
