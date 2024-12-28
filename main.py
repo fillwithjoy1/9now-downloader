@@ -109,10 +109,10 @@ def download_thumbnail(input_url: str, output_image: str):
         writer.write(image)
 
 
-def main(video_url: str, license_url: str, file_name: str, temp_name: str, image_url: str, is_drm: bool):
+def main(video_url: str, license_url: str, file_name: str, temp_name: str, image_url: str):
     download_thumbnail(image_url, temp_name)
     print("Downloaded thumbnail")
-    if is_drm:
+    if bool(license_url):
         pssh_key = download_video_and_pssh(video_url, temp_name)
         print("Successfully downloaded video and PSSH key")
         keys = get_decryption_keys(pssh_key, license_url)
@@ -154,4 +154,4 @@ if __name__ == "__main__":
 
     # This ensures that only one download goes at a time
     with lock:
-        main(video_url, license_url, file_name, str(rng_temp_name), image_url, (license_url == 0))
+        main(video_url, license_url, file_name, str(rng_temp_name), image_url)
