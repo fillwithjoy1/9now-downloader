@@ -58,6 +58,7 @@ export async function browser_scan_download(playlist_url, folder_output, high_pe
         download_links.push(await browser.downloadSingleVideo(scanned_links[i]));
         log("🔗 Fetched links", "info");
     }
+    log("⬇️ Starting download", "info");
     for (let i = 0; i < download_links.length; i++) {
         await python_download_video(download_links[i][0], download_links[i][1], folder_output, download_links[i][2], download_links[i][3]);
     }
