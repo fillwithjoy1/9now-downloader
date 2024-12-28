@@ -7,7 +7,7 @@ import * as fs from "node:fs";
 const high_performance: boolean = false;
 // Controls how many tasks are sent
 const hp_tasks = 3;
-const include_clips: boolean = true;
+const include_clips: boolean = false;
 
 // Define job types in TS
 interface Job {
