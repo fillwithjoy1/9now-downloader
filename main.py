@@ -42,6 +42,7 @@ def read_pssh(path: str) -> str:
 
 def get_decryption_keys(pssh: str, license_url: str) -> str:
     cdrm_api = 'https://cdrm-project.com/'
+    license_url = license_url.replace("\n", '')
 
     json_data = {
         'PSSH': pssh,
