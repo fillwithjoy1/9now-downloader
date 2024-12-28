@@ -75,8 +75,8 @@ def merge_files(file_name: str, temp_name: str):
     try:
         os.rename(f"{temp_name}_out.mp4", f"{output}/{sanitize_file_string(file_name)}.mp4")
     except FileNotFoundError:
-        raise ZeroDivisionError("If you are seeing this, something has gone very wrong."
-                                "Hint: Check the video download and decrypt pipeline")
+        os.mkdir(output)
+        os.rename(f"{temp_name}_out.mp4", f"{output}/{sanitize_file_string(file_name)}.mp4")
     except FileExistsError:
         pass
 
