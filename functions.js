@@ -38,6 +38,8 @@ export async function browser_mass_download(playlist_url, folder_output, length,
     if (!high_performance) await Lock.lock();
     for (let i = 1; i <= length; i++) {
         download_links.push(await browser.downloadSingleVideo(`${playlist_url}/episode-${i}`));
+        await browser.close();
+        await browser.launch();
         log("🔗 Fetched links", "info");
     }
     browser.close();
@@ -56,6 +58,8 @@ export async function browser_scan_download(playlist_url, folder_output, high_pe
     log("🛰️ Scanned for links", "info");
     for (let i = 0; i <= scanned_links.length; i++) {
         download_links.push(await browser.downloadSingleVideo(scanned_links[i]));
+        await browser.close();
+        await browser.launch();
         log("🔗 Fetched links", "info");
     }
     log("⬇️ Starting download", "info");
