@@ -76,12 +76,14 @@ export class Browser {
         }
     }
 
+    // This function is used to create the new object that is returned
     static async create() {
         const browserInstance = new this();
         await browserInstance.launch();
         return browserInstance;
     }
 
+    // Creates a new browser and logs in automatically
     // This function should never be called at all as it's already called using constructor
     async launch() {
         this.browser = await puppeteer.launch({
