@@ -86,6 +86,7 @@ export class Browser {
     // Creates a new browser and logs in automatically
     // This function should never be called at all as it's already called using constructor
     async launch() {
+        // TODO: Add flag that controls whether Chrome or Firefox can be used
         this.browser = await puppeteer.launch({
             channel: 'chrome',
             headless: false,
