@@ -126,6 +126,10 @@ export class Browser {
             await this.safelyWait(page);
             await page.goto(website_url, this.noTimeout);
 
+            if (await this.check404(page)) {
+                resolve([0, 0, 0, 0]);
+                return;
+            }
             await page.waitForSelector('video', this.noTimeout);
             const drmStatus = await this.checkDRMStatus(page);
             log(drmStatus, "debug");
