@@ -14,6 +14,11 @@ from filelock import FileLock
 # FIXME: To remove this safely
 output: str = "output"
 
+# 🏳️ Flags
+# Move thumbnail image after downloading
+# Useful where the thumbnail image gets stripped
+thumbnail_image: bool = True
+
 
 def download_video_and_pssh(url: str, temp_name: str) -> str:
     process = subprocess.run(f"./N_m3u8DL-RE.exe --auto-select --save-name {temp_name} {url}", capture_output=True)
@@ -74,6 +79,7 @@ def merge_files(file_name: str, temp_name: str):
         f"ffmpeg -i {temp_name}_final.mp4 -i {temp_name}.jpg -map 1 -map 0 -c copy -disposition:0 attached_pic {temp_name}_out.mp4")
     try:
         os.rename(f"{temp_name}_out.mp4", f"{output}/{sanitize_file_string(file_name)}.mp4")
+        if thumbnail_image: os.rename(f"{temp_name}.jpg", f"{output}/{sanitize_file_string(temp_name)}.jpg")
     except FileNotFoundError:
         os.mkdir(output)
         os.rename(f"{temp_name}_out.mp4", f"{output}/{sanitize_file_string(file_name)}.mp4")
@@ -83,7 +89,8 @@ def merge_files(file_name: str, temp_name: str):
 
 def cleanup(temp_name: str):
     remove = [f"{temp_name}.mp4", f"{temp_name}.en.m4a", f"{temp_name}_merge.mp4", f"{temp_name}_merge.m4a",
-              f"{temp_name}_final.mp4", f"{temp_name}_out.mp4", f"{temp_name}.jpg"]
+              f"{temp_name}_final.mp4", f"{temp_name}_out.mp4"]
+    if not thumbnail_image: remove.append(f"{temp_name}.jpg")
     for file in remove:
         try:
             os.remove(file)
