@@ -33,13 +33,13 @@ async function main(): Promise<void> {
         if (high_performance) {
             console.log(`⏲️ High Performance Mode is on!`);
             await Lock.lock();
-            const allTheJobs = jobs.jobs.map(individualJob => dispatch_job(individualJob));
+            const allTheJobs = jobs.jobs.map(individualJob => dispatchJob(individualJob));
 
             await Promise.all(allTheJobs).then().catch(console.error);
             Lock.unlock();
         } else {
             for (let i = 0; i < jobs.jobs.length; i++) {
-                await dispatch_job(jobs.jobs[i]);
+                await dispatchJob(jobs.jobs[i]);
             }
         }
     } else {
@@ -48,7 +48,7 @@ async function main(): Promise<void> {
     }
 }
 
-async function dispatch_job(job: Job): Promise<void> {
+async function dispatchJob(job: Job): Promise<void> {
     return new Promise(async resolve => {
         if (job.skip === true) {
             console.log(`🦘 Skipping job ${job.name}`);
