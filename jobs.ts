@@ -61,6 +61,7 @@ async function dispatchJob(job: Job): Promise<void> {
             } else if (job.scan === true) {
                 await browser_scan_download(job.link, job.folder_name, high_performance);
             }
+            markJobDone("jobs.json", job.name);
             console.log(`✅ Finished job successfully: ${job.name}`);
         }
         resolve();
