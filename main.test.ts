@@ -1,7 +1,8 @@
 import {Browser, Lock, sleep} from "./functions.js";
 import {expect, test} from "vitest";
 import * as fs from "node:fs/promises";
-import {existsSync} from "node:fs"
+import {existsSync} from "node:fs";
+import {JobSchema, markJobDone} from "./jobs";
 
 // TODO: Add cohesive testing before reworking the files
 // TODO: Add a valid page to check 404 detection works
@@ -44,4 +45,33 @@ test("Sleep function check", async () => {
     const now2 = performance.now();
     console.log(`Performance: ${now2 - now - 3000}`);
     expect(now2 - now > 2990).toBeTruthy();
+});
+
+// Write a new skeleton job.test.json file
+async function writeNewJobsToDisk(): Promise<void> {
+    const structure = JSON.parse('{"jobs": [{"name": "test", "folder_name": "test", "skip": false}]}');
+    if (existsSync("jobs.test.json")) await fs.unlink("jobs.test.json");
+    await fs.writeFile("jobs.test.json", JSON.stringify(structure));
+}
+
+// Tests an internal function
+test("Write new jobs", async () => {
+    await writeNewJobsToDisk();
+    expect(existsSync("jobs.test.json")).toBeTruthy;
+    await fs.unlink("jobs.test.json");
+});
+
+test("Check job properties", async () => {
+    await writeNewJobsToDisk();
+    const contents: JobSchema = JSON.parse(await fs.readFile("jobs.test.json") as unknown as string);
+    expect(contents.jobs[0].name === "test").toBe(true);
+    await fs.unlink("jobs.test.json");
+});
+
+test("Check marking job as done", async () => {
+    await writeNewJobsToDisk();
+    markJobDone("jobs.test.json", "test");
+    const contents: JobSchema = JSON.parse(await fs.readFile("jobs.test.json") as unknown as string);
+    expect(contents.jobs[0].skip).toBe(true);
+    await fs.unlink("jobs.test.json");
 });

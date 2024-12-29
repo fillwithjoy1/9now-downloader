@@ -17,7 +17,7 @@ output: str = "output"
 # 🏳️ Flags
 # Move thumbnail image after downloading
 # Useful where the thumbnail image gets stripped
-thumbnail_image: bool = True
+thumbnail_image: bool = False
 
 
 def download_video_and_pssh(url: str, temp_name: str) -> str:

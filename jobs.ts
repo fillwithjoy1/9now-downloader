@@ -10,7 +10,7 @@ const hp_tasks = 3;
 const include_clips: boolean = false;
 
 // Define job types in TS
-interface Job {
+export interface Job {
     name: string;
     link: string;
     length: number;
@@ -19,7 +19,7 @@ interface Job {
     scan?: boolean;
 }
 
-interface JobSchema {
+export interface JobSchema {
     jobs: Job[];
 }
 
@@ -33,13 +33,13 @@ async function main(): Promise<void> {
         if (high_performance) {
             console.log(`⏲️ High Performance Mode is on!`);
             await Lock.lock();
-            const allTheJobs = jobs.jobs.map(individualJob => dispatch_job(individualJob));
+            const allTheJobs = jobs.jobs.map(individualJob => dispatchJob(individualJob));
 
             await Promise.all(allTheJobs).then().catch(console.error);
             Lock.unlock();
         } else {
             for (let i = 0; i < jobs.jobs.length; i++) {
-                await dispatch_job(jobs.jobs[i]);
+                await dispatchJob(jobs.jobs[i]);
             }
         }
     } else {
@@ -48,7 +48,7 @@ async function main(): Promise<void> {
     }
 }
 
-async function dispatch_job(job: Job): Promise<void> {
+async function dispatchJob(job: Job): Promise<void> {
     return new Promise(async resolve => {
         if (job.skip === true) {
             console.log(`🦘 Skipping job ${job.name}`);
@@ -61,8 +61,17 @@ async function dispatch_job(job: Job): Promise<void> {
             } else if (job.scan === true) {
                 await browser_scan_download(job.link, job.folder_name, high_performance);
             }
+            markJobDone("jobs.json", job.name);
             console.log(`✅ Finished job successfully: ${job.name}`);
         }
         resolve();
     });
+}
+
+export function markJobDone(fileName: fs.PathOrFileDescriptor, jobName: Job["name"]): void {
+    const data: string = fs.readFileSync(fileName).toString();
+    const jobs: JobSchema = JSON.parse(data);
+    const jobID: number = jobs.jobs.findIndex(individualJob => individualJob.name === jobName);
+    jobs.jobs[jobID].skip = true;
+    fs.writeFileSync(fileName, JSON.stringify(jobs));
 }
