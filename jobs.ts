@@ -67,8 +67,10 @@ async function dispatchJob(job: Job): Promise<void> {
     });
 }
 
-export function markJobDone(fileName: fs.PathOrFileDescriptor, jobName: Job["name"]): Job {
+export function markJobDone(fileName: fs.PathOrFileDescriptor, jobName: Job["name"]): void {
     const data: string = fs.readFileSync(fileName).toString();
     const jobs: JobSchema = JSON.parse(data);
-    return jobs.jobs.find(individualJob => individualJob.name === jobName);
+    const jobID: number = jobs.jobs.findIndex(individualJob => individualJob.name === jobName);
+    jobs.jobs[jobID].skip = true;
+    fs.writeFileSync(fileName, JSON.stringify(jobs));
 }
