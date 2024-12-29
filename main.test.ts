@@ -45,3 +45,22 @@ test("Sleep function check", async () => {
     console.log(`Performance: ${now2 - now - 3000}`);
     expect(now2 - now > 2990).toBeTruthy();
 });
+
+// Write a new skeleton job.test.json file
+async function writeNewJobsToDisk(): Promise<void> {
+    const structure = JSON.parse('{"jobs": [{"name": "test", "folder_name": "test", "skip": false}]}');
+    if (existsSync("jobs.test.json")) await fs.unlink("jobs.test.json");
+    await fs.writeFile("jobs.test.json", JSON.stringify(structure));
+}
+
+// Tests an internal function
+test("Write new jobs", async () => {
+    await writeNewJobsToDisk();
+    expect(existsSync("jobs.test.json")).toBeTruthy;
+});
+
+test("Check job properties", async () => {
+    await writeNewJobsToDisk();
+    const contents: JobSchema = JSON.parse(await fs.readFile("jobs.test.json") as unknown as string);
+    expect(contents.jobs[0].name === "test").toBeTruthy;
+})
