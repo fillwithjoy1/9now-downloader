@@ -1,5 +1,7 @@
 import json
+import os
 import subprocess
+
 
 def check_json_file() -> bool:
     with open('jobs.json', 'r') as file:
@@ -11,5 +13,9 @@ def check_json_file() -> bool:
 
 if __name__ == '__main__':
     while True:
+        try:
+            os.remove("node.lock")
+        except FileNotFoundError:
+            pass
         subprocess.run("npx tsx jobs.ts", shell=True)
         if check_json_file(): break
