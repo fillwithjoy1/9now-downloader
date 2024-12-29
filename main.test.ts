@@ -70,6 +70,8 @@ test("Check job properties", async () => {
 
 test("Check marking job as done", async () => {
     await writeNewJobsToDisk();
-    expect(markJobDone("jobs.test.json", "test")["name"]).toBe("test");
+    markJobDone("jobs.test.json", "test");
+    const contents: JobSchema = JSON.parse(await fs.readFile("jobs.test.json") as unknown as string);
+    expect(contents.jobs[0].skip).toBe(true);
     await fs.unlink("jobs.test.json");
 });
