@@ -10,7 +10,7 @@ const hp_tasks = 3;
 const include_clips: boolean = false;
 
 // Define job types in TS
-interface Job {
+export interface Job {
     name: string;
     link: string;
     length: number;
@@ -19,7 +19,7 @@ interface Job {
     scan?: boolean;
 }
 
-interface JobSchema {
+export interface JobSchema {
     jobs: Job[];
 }
 
