@@ -13,4 +13,4 @@ Currently the main differences in this branch are:
 * Includes a helpful jobs.py wrapper script that re-runs jobs.ts upon an error
   * Usually network errors are the main cause of exceptions
   * Also playlists that are done successfully are marked as done
-  * Be mindful, the python script does not know when all the jobs are done (for now)
+  * Once it detects all the jobs have been done, the python script exits
