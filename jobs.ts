@@ -1,4 +1,5 @@
-import {browser_mass_download, browser_scan_download, Lock} from "./functions";
+// FIXME: too many imports lol
+import {browser_mass_download, browser_scan_download, Lock, sleep, Browser, python_download_video} from "./functions";
 import * as fs from "node:fs";
 
 // 🏳️ FLAGS
