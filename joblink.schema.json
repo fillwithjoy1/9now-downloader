@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Jobs Link schema",
+  "description": "A schema describing how video info should be generated",
+  "type": "object",
+  "properties": {
+    "jobs": {
+      "description": "A collection of completed link arrays",
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "required": ["jobs"],
+  "additionalProperties": false
+}
