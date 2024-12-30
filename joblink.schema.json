@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Jobs Link schema",
+  "description": "A schema describing how video info should be generated",
+  "type": "object",
+  "properties": {
+    "jobs": {
+      "description": "A collection of completed link arrays",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "video_link": {
+            "type": "string",
+            "description": "Link of video"
+          },
+          "license_url": {
+            "type": "string",
+            "description": "Link to license"
+          },
+          "file_name": {
+            "type": "string",
+            "description": "Output name"
+          },
+          "image_url": {
+            "type": "string",
+            "description": "URL of thumbnail"
+          }
+        },
+        "required": [
+          "video_link",
+          "license_url",
+          "file_name",
+          "image_url"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["jobs"],
+  "additionalProperties": false
+}
