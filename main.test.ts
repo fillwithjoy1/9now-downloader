@@ -75,3 +75,18 @@ test("Check marking job as done", async () => {
     expect(contents.jobs[0].skip).toBe(true);
     await fs.unlink("jobs.test.json");
 });
+
+// Writes a test joblink file
+async function writeJobLinks(): Promise<void> {
+    const skeleton: JobLink = JSON.parse('{"jobs": []}')
+    skeleton.jobs.push({file_name: "test", image_url: "test", license_url: "test", video_link: "test"})
+    if (existsSync("joblink.test.json")) await fs.unlink("joblink.test.json");
+    await fs.writeFile("joblink.test.json", JSON.stringify(skeleton));
+}
+
+test("Check joblink write", async () => {
+    await writeJobLinks();
+    const contents: JobLink = JSON.parse(await fs.readFile("joblink.test.json") as unknown as string);
+    expect(contents.jobs[0].file_name).toBe("test");
+    await fs.unlink("joblink.test.json");
+});
