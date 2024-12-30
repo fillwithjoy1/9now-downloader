@@ -8,6 +8,9 @@ const high_performance: boolean = false;
 // Controls how many tasks are sent
 const hp_tasks = 3;
 const include_clips: boolean = false;
+// 🚨 DRAMATICALLY IMPROVES RELIABILITY 🚨
+// Writes each individual link to a file that is then processed for download
+const write_to_file: boolean = true;
 
 // Define job types in TS
 export interface Job {
