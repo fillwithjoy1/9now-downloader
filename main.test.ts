@@ -2,7 +2,7 @@ import {Browser, Lock, sleep} from "./functions.js";
 import {expect, test} from "vitest";
 import * as fs from "node:fs/promises";
 import {existsSync} from "node:fs";
-import {JobSchema, markJobDone} from "./jobs";
+import {JobLink, JobSchema, markJobDone} from "./jobs";
 
 // TODO: Add cohesive testing before reworking the files
 // TODO: Add a valid page to check 404 detection works
