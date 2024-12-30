@@ -95,9 +95,40 @@ export function markJobDone(fileName: fs.PathOrFileDescriptor, jobName: Job["nam
     fs.writeFileSync(fileName, JSON.stringify(jobs));
 }
 
+// FIXME: Add clips support/merge with dispatchJob
+// FIXME: Add support for high_performance
+async function dispatchJobWithDisk(job: Job, fileName: string): Promise<void> {
+    return new Promise(async resolve => {
+        if (job.skip === true) {
+            console.log(`🦘 Skipping job ${job.name}`);
+        } else {
+            if (!fs.existsSync(fileName)) await writeJobLinksFile(fileName);
+            const data: JobLink = JSON.parse(fs.readFileSync(fileName).toString());
+            const jobsWritten: number = data.jobs.length
+            if (jobsWritten > 0) console.log(`💾 Found ${jobsWritten} links written to disk`);
+            const browser = await Browser.create();
+            const download_links: VideoInfo[] = data.jobs;
+            await Lock.lock();
+            for (let i = jobsWritten + 1; i <= job.length; i++) {
+                download_links.push(await browser.downloadSingleVideo(`${job.link}/episode-${i}`));
+                console.log("🔗 Fetched links");
+                await saveJSONtoFile({'jobs': download_links} satisfies JobLink, "joblink.json");
+            }
+            browser.close();
+            console.log("⬇️ Starting download");
+            for (let i = 0; i < download_links.length; i++) {
+                await python_download_video(download_links[i][0], download_links[i][1], job.folder_name, `Ep ${i + 1} - ${download_links[i][2]}`, download_links[i][3]);
+            }
+            await Lock.unlock();
+            fs.unlink("joblink.json", err => err);
+            markJobDone("jobs.json", job.name);
+            console.log(`✅ Finished job successfully: ${job.name}`);
+        }
+        resolve();
+    });
+}
 
-
-export async function saveJSONtoFile(json: JSON, fileName: string): Promise<void> {
+export async function saveJSONtoFile(json, fileName: string): Promise<void> {
     if (fs.existsSync(fileName)) fs.unlink(fileName, err => err);
     fs.writeFileSync(fileName, JSON.stringify(json));
 }
