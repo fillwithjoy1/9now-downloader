@@ -26,6 +26,17 @@ export interface JobSchema {
     jobs: Job[];
 }
 
+export interface JobLink {
+    jobs: VideoInfo[]
+}
+
+export interface VideoInfo {
+    video_link: string;
+    license_url: string;
+    file_name: string;
+    image_url: string;
+}
+
 main().then();
 
 async function main(): Promise<void> {
