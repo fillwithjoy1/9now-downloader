@@ -53,7 +53,11 @@ async function main(): Promise<void> {
             Lock.unlock();
         } else {
             for (let i = 0; i < jobs.jobs.length; i++) {
-                await dispatchJob(jobs.jobs[i]);
+                if (write_to_file) {
+                    await dispatchJobWithDisk(jobs.jobs[i], 'joblink.json');
+                } else {
+                    await dispatchJob(jobs.jobs[i]);
+                }
             }
         }
     } else {
