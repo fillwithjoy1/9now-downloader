@@ -93,3 +93,9 @@ export function markJobDone(fileName: fs.PathOrFileDescriptor, jobName: Job["nam
     jobs.jobs[jobID].skip = true;
     fs.writeFileSync(fileName, JSON.stringify(jobs));
 }
+
+export async function writeJobLinksFile(fileName: string) {
+    const skeleton: JobLink = JSON.parse('{"jobs": []}')
+    if (fs.existsSync(fileName)) fs.unlink(fileName, err => err);
+    fs.writeFileSync(fileName, JSON.stringify(skeleton));
+}
