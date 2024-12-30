@@ -2,7 +2,7 @@ import {Browser, Lock, sleep} from "./functions.js";
 import {expect, test} from "vitest";
 import * as fs from "node:fs/promises";
 import {existsSync} from "node:fs";
-import {JobLink, JobSchema, markJobDone, writeJobLinksFile} from "./jobs";
+import {JobLink, JobSchema, markJobDone, saveJSONtoFile, writeJobLinksFile} from "./jobs";
 
 // TODO: Add cohesive testing before reworking the files
 // TODO: Add a valid page to check 404 detection works
@@ -76,9 +76,16 @@ test("Check marking job as done", async () => {
     await fs.unlink("jobs.test.json");
 });
 
-test("Check joblink write ", async () => {
+test("Check joblink write", async () => {
     await writeJobLinksFile('joblink.test.json');
     const contents: JobLink = JSON.parse(await fs.readFile("joblink.test.json") as unknown as string);
     expect(contents.jobs.length).toBe(0);
     await fs.unlink("joblink.test.json");
-})
+});
+
+test("Check JSON writing to file", async () => {
+   await saveJSONtoFile({'jobs': 20}, "test.json");
+   const contents = JSON.parse(await fs.readFile("test.json") as unknown as string);
+   expect(contents.jobs).toBe(20);
+   await fs.unlink("test.json");
+});
