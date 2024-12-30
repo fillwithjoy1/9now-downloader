@@ -129,7 +129,6 @@ async function dispatchJobWithDisk(job: Job, fileName: string): Promise<void> {
 }
 
 export async function saveJSONtoFile(json, fileName: string): Promise<void> {
-    if (fs.existsSync(fileName)) fs.unlink(fileName, err => err);
     fs.writeFileSync(fileName, JSON.stringify(json));
 }
 
