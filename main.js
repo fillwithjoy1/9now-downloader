@@ -32,22 +32,22 @@ async function download_video(path) {
     switch (path) {
         case 0:
             process.exit(3);
-            break
-        case 3:
-            const url_3 = await rl.question(`Playlist URL `);
-            const folder_3 = await rl.question(`Output folder name `);
-            const length_3 = await rl.question(`Playlist length `);
-            await rl.close();
-            await browser_mass_download(url_3, folder_3, length_3);
             break;
-        case 4:
-            const url_4 = await rl.question(`Video URL`);
+        case 1:
+            const url_1 = await rl.question(`Video URL`);
             await rl.close();
             const browser = await Browser.create();
             await Lock.lock();
-            const data_4 = await browser.downloadSingleVideo(url_4);
-            await python_download_video(data_4[0], data_4[1], 'output', data_4[2], data_4[3]);
+            const data_1 = await browser.downloadSingleVideo(url_1);
+            await python_download_video(data_1[0], data_1[1], 'output', data_1[2], data_1[3]);
             Lock.unlock();
+            break;
+        case 2:
+            const url_2 = await rl.question(`Playlist URL `);
+            const folder_2 = await rl.question(`Output folder name `);
+            const length_2 = await rl.question(`Playlist length `);
+            await rl.close();
+            await browser_mass_download(url_2, folder_2, length_2);
             break;
         default:
             console.log('Invalid choice. Exiting');
