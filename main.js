@@ -77,31 +77,6 @@ async function download_video(path) {
     }
 }
 
-class Lock {
-    static status() {
-        return fs.existsSync("node.lock");
-    }
-
-    static lock() {
-        return new Promise(async resolve => {
-            while (this.status()) {
-                console.log("Lock is active...");
-                await sleep(3000);
-            }
-            fs.writeFileSync("node.lock", "");
-            resolve();
-        });
-    }
-
-    static unlock() {
-        try {
-            fs.unlinkSync("node.lock");
-        } catch (e) {
-            console.warn(e);
-        }
-    }
-}
-
 // Used to URL scan a whole function
 export async function navigate_playlist(playlist_url, folder_output) {
     // Launch the browser and open a new blank page
