@@ -21,10 +21,6 @@ if (fs.existsSync("password")) {
 }
 
 // FIXME: What the hell does this variable do?
-let actual_file_name = '';
-let video_link = '';
-let license_url = '';
-let tripped = false;
 
 const rl = readline.createInterface({
     input: process.stdin,
