@@ -10,9 +10,6 @@ const rl = readline.createInterface({
 //  That will have to be changed
 rl.question(`Download one video, or an entire playlist? (1, 2) `).then(async option => {
     switch (Number(option)) {
-        case 0:
-            process.exit(3);
-            break;
         case 1:
             const url_1 = await rl.question(`Video URL`);
             rl.close();
