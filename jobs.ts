@@ -1,5 +1,4 @@
-// FIXME: too many imports lol
-import {browser_mass_download, browser_scan_download, Lock, sleep, Browser, python_download_video} from "./functions";
+import * as fun from "./functions";
 import * as fs from "node:fs";
 
 // 🏳️ FLAGS
@@ -47,11 +46,11 @@ async function main(): Promise<void> {
         console.log(`💡 Found ${jobs.jobs.length} jobs to do`);
         if (high_performance) {
             console.log(`⏲️ High Performance Mode is on!`);
-            await Lock.lock();
+            await fun.Lock.lock();
             const allTheJobs = jobs.jobs.map(individualJob => dispatchJob(individualJob));
 
             await Promise.all(allTheJobs).then().catch(console.error);
-            Lock.unlock();
+            fun.Lock.unlock();
         } else {
             for (let i = 0; i < jobs.jobs.length; i++) {
                 if (write_to_file) {
@@ -74,11 +73,11 @@ async function dispatchJob(job: Job): Promise<void> {
         } else {
             console.log(`⚒️ Starting job ${job.name}`);
             if (!job.scan) {
-                await browser_mass_download(job.link, job.folder_name, job.length, high_performance);
+                await fun.browser_mass_download(job.link, job.folder_name, job.length, high_performance);
                 if (include_clips) console.log("✂️ Downloading clips");
-                if (include_clips) await browser_scan_download(`${job.link}/clips`, `${job.folder_name}_clips`, high_performance)
+                if (include_clips) await fun.browser_scan_download(`${job.link}/clips`, `${job.folder_name}_clips`, high_performance)
             } else if (job.scan === true) {
-                await browser_scan_download(job.link, job.folder_name, high_performance);
+                await fun.browser_scan_download(job.link, job.folder_name, high_performance);
             }
             markJobDone("jobs.json", job.name);
             console.log(`✅ Finished job successfully: ${job.name}`);
@@ -106,9 +105,9 @@ async function dispatchJobWithDisk(job: Job, fileName: string): Promise<void> {
             const data: JobLink = JSON.parse(fs.readFileSync(fileName).toString());
             const jobsWritten: number = data.jobs.length
             if (jobsWritten > 0) console.log(`💾 Found ${jobsWritten} links written to disk`);
-            const browser = await Browser.create();
+            const browser = await fun.Browser.create();
             const download_links: VideoInfo[] = data.jobs;
-            await Lock.lock();
+            await fun.Lock.lock();
             for (let i = jobsWritten + 1; i <= job.length; i++) {
                 download_links.push(await browser.downloadSingleVideo(`${job.link}/episode-${i}`));
                 console.log("🔗 Fetched links");
@@ -117,9 +116,9 @@ async function dispatchJobWithDisk(job: Job, fileName: string): Promise<void> {
             browser.close();
             console.log("⬇️ Starting download");
             for (let i = 0; i < download_links.length; i++) {
-                await python_download_video(download_links[i][0], download_links[i][1], job.folder_name, `Ep ${i + 1} - ${download_links[i][2]}`, download_links[i][3]);
+                await fun.python_download_video(download_links[i][0], download_links[i][1], job.folder_name, `Ep ${i + 1} - ${download_links[i][2]}`, download_links[i][3]);
             }
-            await Lock.unlock();
+            await fun.Lock.unlock();
             fs.unlink("joblink.json", err => err);
             markJobDone("jobs.json", job.name);
             console.log(`✅ Finished job successfully: ${job.name}`);
@@ -135,6 +134,6 @@ export async function saveJSONtoFile(json, fileName: string): Promise<void> {
 export async function writeJobLinksFile(fileName: string) {
     const skeleton: JobLink = JSON.parse('{"jobs": []}')
     if (fs.existsSync(fileName)) fs.unlink(fileName, err => err);
-    await sleep(10);
+    await fun.sleep(10);
     fs.writeFileSync(fileName, JSON.stringify(skeleton));
 }
