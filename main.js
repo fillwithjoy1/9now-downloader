@@ -1,5 +1,3 @@
-// FIXME: Use camelCase naming conventions
-
 import * as readline from "node:readline/promises";
 import * as fs from "node:fs";
 import {Browser, browser_mass_download, python_download_video, Lock} from "./functions.js";
@@ -24,8 +22,12 @@ const rl = readline.createInterface({
 
 // TODO: Get it working in headless mode. So far, we are relying heavily on auto-play to do the work
 //  That will have to be changed
-rl.question(`Download one video, or an entire playlist? (1, 2) `).then(async option => {
-    switch (Number(option)) {
+rl.question(`Download one video, or an entire playlist? (1, 2) `).then(option => {
+    download_video(Number(option));
+});
+
+async function download_video(path) {
+    switch (path) {
         case 0:
             process.exit(3);
             break;
@@ -35,7 +37,6 @@ rl.question(`Download one video, or an entire playlist? (1, 2) `).then(async opt
             const browser = await Browser.create();
             await Lock.lock();
             const data_1 = await browser.downloadSingleVideo(url_1);
-            console.log("⬇️ Starting download");
             await python_download_video(data_1[0], data_1[1], 'output', data_1[2], data_1[3]);
             Lock.unlock();
             break;
@@ -49,5 +50,5 @@ rl.question(`Download one video, or an entire playlist? (1, 2) `).then(async opt
         default:
             console.log('Invalid choice. Exiting');
             process.exit(2);
+    }
 }
-});
