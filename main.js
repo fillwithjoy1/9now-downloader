@@ -20,8 +20,6 @@ if (fs.existsSync("password")) {
     });
 }
 
-// FIXME: What the hell does this variable do?
-
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
