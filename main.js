@@ -1,5 +1,4 @@
 // FIXME: Use camelCase naming conventions
-// FIXME: Remove like the 100 functions here
 
 import * as readline from "node:readline/promises";
 import * as fs from "node:fs";
