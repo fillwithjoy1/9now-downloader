@@ -31,8 +31,6 @@ const rl = readline.createInterface({
     output: process.stdout,
 });
 
-// TODO: Fix download issues, or add auto-restarts to shaft this problem completely
-//  It's occurring due to random ad breaks occurring
 // TODO: Get it working in headless mode. So far, we are relying heavily on auto-play to do the work
 //  That will have to be changed
 rl.question(`Download one video, or an entire playlist? (1, 2) `).then(option => {
