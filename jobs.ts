@@ -4,6 +4,8 @@ import * as fs from "node:fs";
 // 🏳️ FLAGS
 // High-Performance mode requires significant amounts of RAM, CPU and Network
 // Instead of running one job at a time, all jobs are dispatched
+// TODO: To finish
+// TODO: Integrate all the features by default to avoid flags needed
 const high_performance: boolean = false;
 // Controls how many tasks are sent
 const hp_tasks = 3;
