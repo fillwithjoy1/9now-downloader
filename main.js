@@ -3,7 +3,7 @@
 
 import * as readline from "node:readline/promises";
 import * as fs from "node:fs";
-import {Browser, browser_mass_download, python_download_video, sleep} from "./functions.js";
+import {Browser, browser_mass_download, python_download_video, Lock} from "./functions.js";
 
 // Credentials Manager
 let email = "";
@@ -34,19 +34,6 @@ async function download_video(path) {
         case 0:
             process.exit(3);
             break
-        case 1:
-            const url_1 = await rl.question(`Website URL `);
-            const file_1 = await rl.question(`File name `)
-            actual_file_name = file_1;
-            await rl.close();
-            await download_single_video(url_1, file_1);
-            break;
-        case 2:
-            const url_2 = await rl.question(`Playlist URL `);
-            const folder_2 = await rl.question(`Output folder name `);
-            await rl.close();
-            await navigate_playlist(url_2, folder_2);
-            break;
         case 3:
             const url_3 = await rl.question(`Playlist URL `);
             const folder_3 = await rl.question(`Output folder name `);
