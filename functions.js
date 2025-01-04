@@ -248,7 +248,6 @@ export class Browser {
         return await page.$eval('._3JyyHX', t => t.innerHTML);
     }
 
-    // FIXME: This function is unreliable
     async check404(page) {
         return (await page.title() === "Page not found");
     }
