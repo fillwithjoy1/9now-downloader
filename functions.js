@@ -1,8 +1,8 @@
 // What does this file do? Well it contains functions that are used in jobs.ts
 // Why? Because calling functions from there wakes up rl.question and that's not good
 
-import puppeteer from "puppeteer";
-import {exec} from "child_process";
+import puppeteer from "npm:puppeteer";
+import {exec} from "node:child_process";
 import fs from "node:fs";
 
 // Credentials manager
@@ -122,7 +122,7 @@ export class Browser {
     // Goes to specified link and returns the download video link and license URL required
     // Returns 0 for the license_url, if it's a non-drm video
     async downloadSingleVideo(website_url) {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async resolve => {
 
             const page = await this.browser.newPage();
 
