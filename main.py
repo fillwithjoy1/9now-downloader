@@ -11,7 +11,6 @@ from pathlib import Path
 import requests
 from filelock import FileLock
 
-# FIXME: To remove this safely
 output: str = "output"
 
 # 🏳️ Flags
