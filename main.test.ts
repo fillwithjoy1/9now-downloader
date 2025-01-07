@@ -3,12 +3,13 @@ import {expect, test} from "vitest";
 import * as fs from "node:fs/promises";
 import {existsSync} from "node:fs";
 import {JobLink, JobSchema, markJobDone, saveJSONtoFile, writeJobLinksFile} from "./jobs";
+import {Page} from "puppeteer";
 
 // TODO: Add cohesive testing before reworking the files
 test("404 Page Check", async () => {
-    const browser = await Browser.create();
+    const browser: Browser = await Browser.create();
 
-    const page = await browser.browser.newPage();
+    const page: Page = await browser.browser.newPage();
 
     await page.goto("https://www.9now.com.au/archery-olympic-games-paris-2024/season-2025/", browser.noTimeout);
 
