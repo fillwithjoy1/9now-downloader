@@ -159,6 +159,7 @@ export class Browser {
             // TODO: This doesn't account for the title being completely empty
             this.title = await this.fetchTitle(page);
 
+            // TODO: Merge both functions
             this.listenForDRMLinks = async request => {
                 if (request.url().includes("manifest.mpd") && this.videoUrl === '' && !request.url().includes("brightcove") && !request.url().includes("infinity")) {
                     this.videoUrl = request.url();
