@@ -1,5 +1,5 @@
 import * as readline from "node:readline/promises";
-import {Browser, browser_mass_download, python_download_video, Lock} from "./functions.js";
+import {PuppeteerBrowser, browser_mass_download, python_download_video, Lock} from "./functions.js";
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -13,7 +13,7 @@ rl.question(`Download one video, or an entire playlist? (1, 2) `).then(async opt
         case 1:
             const url_1 = await rl.question(`Video URL`);
             rl.close();
-            const browser = await Browser.create();
+            const browser = await PuppeteerBrowser.create();
             await Lock.lock();
             const data_1 = await browser.downloadSingleVideo(url_1);
             console.log("⬇️ Starting download");
@@ -21,9 +21,9 @@ rl.question(`Download one video, or an entire playlist? (1, 2) `).then(async opt
             Lock.unlock();
             break;
         case 2:
-            const url_2 = await rl.question(`Playlist URL `);
-            const folder_2 = await rl.question(`Output folder name `);
-            const length_2 = await rl.question(`Playlist length `);
+            const url_2: string = await rl.question(`Playlist URL `);
+            const folder_2: string = await rl.question(`Output folder name `);
+            const length_2: number = Number(await rl.question(`Playlist length `));
             rl.close();
             await browser_mass_download(url_2, folder_2, length_2);
             break;
