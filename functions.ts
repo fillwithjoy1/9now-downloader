@@ -79,10 +79,10 @@ export async function browser_scan_download(playlist_url: string, folder_output:
 // TODO: await page.close() doesn't do anything - this is a Firefox issue
 export class PuppeteerBrowser {
     // Stop the no timeout errors
-    private readonly noTimeout: { timeout: number } = {
+    readonly noTimeout: { timeout: number } = {
         timeout: 0,
     };
-    private browser: Browser;
+    browser: Browser;
     private page: Page;
     private autoRestart: NodeJS.Timeout;
     private autoSkip: NodeJS.Timeout;

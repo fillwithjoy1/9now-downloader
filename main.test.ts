@@ -1,4 +1,4 @@
-import {Browser, Lock, sleep} from "./functions.js";
+import {PuppeteerBrowser, Lock, sleep} from "./functions.js";
 import {expect, test} from "vitest";
 import * as fs from "node:fs/promises";
 import {existsSync} from "node:fs";
@@ -7,7 +7,7 @@ import {Page} from "puppeteer";
 
 // TODO: Add cohesive testing before reworking the files
 test("404 Page Check", async () => {
-    const browser: Browser = await Browser.create();
+    const browser: PuppeteerBrowser = await PuppeteerBrowser.create();
 
     const page: Page = await browser.browser.newPage();
 
@@ -16,6 +16,8 @@ test("404 Page Check", async () => {
     console.log(await browser.check404(page));
 
     expect(await browser.check404(page)).toBeTruthy();
+    // FIXME: Check response type
+    console.log(typeof await browser.check404(page));
 }, 60000);
 
 // Test Lock class
